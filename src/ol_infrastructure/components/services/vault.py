@@ -28,6 +28,7 @@ from ol_infrastructure.lib.vault import (
     postgres_role_statements,
 )
 
+
 SIX_MONTHS = 60 * 60 * 24 * 30 * 6  # noqa: WPS432
 TWELVE_MONTHS = 60 * 60 * 24 * 30 * 12  # noqa: WPS432
 VAULT_API_URL = "https://active.vault.service.consul/v1"
@@ -241,6 +242,7 @@ class OLVaultAWSSecretsEngine(ComponentResource):
         self.register_outputs({})
 
 
+
 class OLVaultPKIIntermediateCABackendConfig(BaseModel):
     max_ttl: int = TWELVE_MONTHS
     default_ttl: int = TWELVE_MONTHS
@@ -298,7 +300,7 @@ class OLVaultPKIIntermediateCABackend(ComponentResource):
             pkisecret.SecretBackendIntermediateSetSigned(
                 "pki-intermediate-ca-set-signed",
                 backend=self.pki_intermediate_ca_backend.id,
-                certificate=backend_config.intermediate_ca_cert,
+                certificate=backend_config.intermediate_ca_pem_bundle,
             )
         )
 
@@ -411,7 +413,7 @@ class OLVaultPKIIntermediateEnvBackend(ComponentResource):
 
 
 class OLVaultPKIIntermediateRoleConfig(BaseModel):
-    pki_intermediate_backend: str
+    pki_intermediate_backend: Mount
     role_name: str
     key_config: VaultPKIKeyTypeBits
     max_ttl: int = SIX_MONTHS
@@ -419,6 +421,10 @@ class OLVaultPKIIntermediateRoleConfig(BaseModel):
     key_usages: List[str] = ["DigitalSignature", "KeyAgreement", "KeyEncipherment"]
     allowed_domains: List[str]
     cert_type: str  # Should be client or server
+    resource_name: Text
+
+    class Config:  # noqa: WPS431, WPS306, D106
+        arbitrary_types_allowed = True
 
     @validator("cert_type")
     def is_valid_cert_type(
@@ -440,7 +446,7 @@ class OLVaultPKIIntermediateRole(ComponentResource):
     ):
         super().__init__(
             "ol:services:Vault:PKI:IntermediateRoleConfig",
-            role_config.role_name,
+            role_config.resource_name,
             None,
             opts,
         )
@@ -454,10 +460,11 @@ class OLVaultPKIIntermediateRole(ComponentResource):
         }
 
         self.pki_intermediate_env_client_role = pkisecret.SecretBackendRole(
-            role_config.role_name,
+            role_config.resource_name,
             # forcing role name so that pulumi doesn't add suffix
             name=role_config.role_name,
-            backend=role_config.pki_intermediate_backend,
+            backend=role_config.pki_intermediate_backend.path,
+
             allowed_domains=role_config.allowed_domains,
             allow_glob_domains=True,
             key_type=role_config.key_config.name,
