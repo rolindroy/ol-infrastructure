@@ -1,0 +1,27 @@
+{
+  "containerDefinitions": [
+    {
+      "cpu": 256,
+      "essential": true,
+      "image": "###IMAGE###",
+      "memory": 512,
+      "name": "###NAME###",
+      "portMappings": [
+        {
+          "containerPort": 80,
+          "hostPort": 80,
+          "protocol": "tcp"
+        }
+      ]
+    }
+  ],
+  "cpu": "256",
+  "executionRoleArn": "###EXECUTION_ROLE_ARN###",
+  "family": "###FAMILY###",
+  "memory": "512",
+  "networkMode": "awsvpc",
+  "requiresCompatibilities": [
+    "FARGATE"
+  ],
+  "taskRoleArn": "###TASK_ROLE_ARN###"
+}

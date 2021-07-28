@@ -1,0 +1,90 @@
+---
+resources:
+  - name: config-repo
+    type: git
+    icon: github
+    source:
+      uri: https://github.com/mitodl/ol-infrastructure.git
+      branch: fh/xqueue
+
+  - name: app-repo
+    type: git
+    icon: github
+    source:
+      uri: https://github.com/mitodl/xqueue
+      branch: master
+
+  - name: image
+    type: docker-image
+    source:
+      aws_access_key_id: ((aws-access-key-id))
+      aws_secret_access_key: ((aws-secret-access-key))
+      repository: ((ecr-uri))
+
+jobs:
+  - name: build-push-deploy
+    public: true
+    serial: true
+    plan:
+      - get: app-repo
+        trigger: true
+
+      - get: config-repo
+        trigger: true
+
+      - put: image
+        params:
+          dockerfile: ./config-repo/Dockerfile-xqueue
+          tag_file: ./app-repo/.git/ref
+          build: .
+          build_args:
+            app_dir: app-repo
+            config_dir: config-repo
+
+      - task: deploy
+        config:
+          platform: linux
+          image_resource:
+            type: registry-image
+            source: { repository: alpine }
+          inputs:
+            - name: app-repo
+            - name: config-repo
+          params:
+              AWS_DEFAULT_REGION: us-east-1
+              AWS_ACCESS_KEY_ID: ((aws-access-key-id))
+              AWS_SECRET_ACCESS_KEY: ((aws-secret-access-key))
+          run:
+            path: sh
+            args:
+              - -c
+              - |
+                set -eux
+                apk update
+                apk add --no-progress --no-cache aws-cli jq
+
+                FAMILY=xqueue-mitxonline-qa
+                CLUSTER=edx-ida_mitxonline-qa
+
+                aws ecs describe-task-definition --task-definition "${FAMILY}" > deployed-taskdef.json
+
+                TAG=$(cat app-repo/.git/ref)
+
+                IMAGE="((ecr-uri)):${TAG}"
+                # LOG_GROUP=/ecs/$ENVIRONMENT
+                TASK_ROLE_ARN=$(< deployed-taskdef.json jq '.taskDefinition.taskRoleArn' -r)
+                EXECUTION_ROLE_ARN=$(< deployed-taskdef.json jq '.taskDefinition.executionRoleArn' -r)
+
+                sed \
+                  -e "s;###IMAGE###;${IMAGE};g" \
+                  -e "s;###TASK_ROLE_ARN###;${TASK_ROLE_ARN};g" \
+                  -e "s;###EXECUTION_ROLE_ARN###;${EXECUTION_ROLE_ARN};g" \
+                  -e "s;###FAMILY###;${FAMILY};g" \
+                  -e "s;###NAME###;${FAMILY};g" \
+                  -i "config-repo/dockerfiles/xqueue/taskdef.json"
+                
+                cat config-repo/taskdef.json
+
+                aws ecs register-task-definition --cli-input-json file://config-repo/taskdef.json | tee result.json
+                TASK_ARN=$(cat result.json | jq '.taskDefinition.taskDefinitionArn' -r)
+                aws ecs update-service --force-new-deployment --service "${FAMILY}" --cluster "${CLUSTER}" --task-definition "${TASK_ARN}"
