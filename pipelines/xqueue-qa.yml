@@ -28,7 +28,6 @@ jobs:
         trigger: true
 
       - get: config-repo
-        trigger: true
 
       - put: image
         params:
