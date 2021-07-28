@@ -17,8 +17,6 @@ resources:
   - name: image
     type: docker-image
     source:
-      aws_access_key_id: ((aws-access-key-id))
-      aws_secret_access_key: ((aws-secret-access-key))
       repository: ((ecr-uri))
 
 jobs:
@@ -52,8 +50,6 @@ jobs:
             - name: config-repo
           params:
               AWS_DEFAULT_REGION: us-east-1
-              AWS_ACCESS_KEY_ID: ((aws-access-key-id))
-              AWS_SECRET_ACCESS_KEY: ((aws-secret-access-key))
           run:
             path: sh
             args:
