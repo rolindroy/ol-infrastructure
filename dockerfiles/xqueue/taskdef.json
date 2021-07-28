@@ -4,12 +4,20 @@
       "cpu": 256,
       "essential": true,
       "image": "###IMAGE###",
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "###LOG_GROUP###",
+          "awslogs-region": "###REGION###",
+          "awslogs-stream-prefix": "xqueue"
+        }
+      },
       "memory": 512,
       "name": "###NAME###",
       "portMappings": [
         {
-          "containerPort": 80,
-          "hostPort": 80,
+          "containerPort": 8040,
+          "hostPort": 8040,
           "protocol": "tcp"
         }
       ]

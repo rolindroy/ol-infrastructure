@@ -34,12 +34,12 @@ jobs:
 
       - put: image
         params:
-          dockerfile: ./config-repo/Dockerfile-xqueue
+          dockerfile: ./config-repo/dockerfiles/xqueue/Dockerfile
           tag_file: ./app-repo/.git/ref
           build: .
           build_args:
             app_dir: app-repo
-            config_dir: config-repo
+            config_dir: config-repo/dockerfiles/xqueue
 
       - task: deploy
         config:
@@ -68,12 +68,13 @@ jobs:
 
                 aws ecs describe-task-definition --task-definition "${FAMILY}" > deployed-taskdef.json
 
-                TAG=$(cat app-repo/.git/ref)
+                TAG=$(head -1 app-repo/.git/ref)
 
                 IMAGE="((ecr-uri)):${TAG}"
-                # LOG_GROUP=/ecs/$ENVIRONMENT
+                LOG_GROUP=/ecs/mitxonline-qa
                 TASK_ROLE_ARN=$(< deployed-taskdef.json jq '.taskDefinition.taskRoleArn' -r)
                 EXECUTION_ROLE_ARN=$(< deployed-taskdef.json jq '.taskDefinition.executionRoleArn' -r)
+                REGION=us-east-1
 
                 sed \
                   -e "s;###IMAGE###;${IMAGE};g" \
@@ -81,6 +82,8 @@ jobs:
                   -e "s;###EXECUTION_ROLE_ARN###;${EXECUTION_ROLE_ARN};g" \
                   -e "s;###FAMILY###;${FAMILY};g" \
                   -e "s;###NAME###;${FAMILY};g" \
+                  -e "s;###LOG_GROUP###;${LOG_GROUP};g" \
+                  -e "s;###REGION###;${REGION};g" \
                   -i "config-repo/dockerfiles/xqueue/taskdef.json"
                 
                 cat config-repo/taskdef.json
