@@ -31,6 +31,7 @@ jobs:
 
       - put: image
         params:
+          cache: true
           dockerfile: ./config-repo/dockerfiles/xqueue/Dockerfile
           tag_file: ./app-repo/.git/ref
           build: .
@@ -81,8 +82,8 @@ jobs:
                   -e "s;###REGION###;${REGION};g" \
                   -i "config-repo/dockerfiles/xqueue/taskdef.json"
                 
-                cat config-repo/taskdef.json
+                cat config-repo/dockerfiles/xqueue/taskdef.json
 
-                aws ecs register-task-definition --cli-input-json file://config-repo/taskdef.json | tee result.json
+                aws ecs register-task-definition --cli-input-json file://config-repo/dockerfiles/xqueue/taskdef.json | tee result.json
                 TASK_ARN=$(cat result.json | jq '.taskDefinition.taskDefinitionArn' -r)
                 aws ecs update-service --force-new-deployment --service "${FAMILY}" --cluster "${CLUSTER}" --task-definition "${TASK_ARN}"
