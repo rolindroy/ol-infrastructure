@@ -11,7 +11,7 @@ resources:
     type: git
     icon: github
     source:
-      uri: https://github.com/mitodl/xqueue
+      uri: https://github.com/edx/xqueue.git
       branch: master
 
   - name: image
