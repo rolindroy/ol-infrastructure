@@ -31,7 +31,7 @@ jobs:
 
       - put: image
         params:
-          cache: true
+          # cache: true
           dockerfile: ./config-repo/dockerfiles/notes/Dockerfile
           tag_file: ./app-repo/.git/ref
           build: .
