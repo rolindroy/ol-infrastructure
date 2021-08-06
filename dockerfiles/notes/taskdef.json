@@ -1,0 +1,35 @@
+{
+  "containerDefinitions": [
+    {
+      "cpu": 256,
+      "essential": true,
+      "image": "###IMAGE###",
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "###LOG_GROUP###",
+          "awslogs-region": "###REGION###",
+          "awslogs-stream-prefix": "notes"
+        }
+      },
+      "memory": 512,
+      "name": "###NAME###",
+      "portMappings": [
+        {
+          "containerPort": 8120,
+          "hostPort": 8120,
+          "protocol": "tcp"
+        }
+      ]
+    }
+  ],
+  "cpu": "256",
+  "executionRoleArn": "###EXECUTION_ROLE_ARN###",
+  "family": "###FAMILY###",
+  "memory": "512",
+  "networkMode": "awsvpc",
+  "requiresCompatibilities": [
+    "FARGATE"
+  ],
+  "taskRoleArn": "###TASK_ROLE_ARN###"
+}
