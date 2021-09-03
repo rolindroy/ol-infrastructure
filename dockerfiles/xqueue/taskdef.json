@@ -39,16 +39,7 @@
         "/bin/sh",
         "-ec"
       ]
-    }
-  ],
-  "cpu": "256",
-  "executionRoleArn": "###EXECUTION_ROLE_ARN###",
-  "family": "###FAMILY###",
-  "memory": "512",
-  "networkMode": "awsvpc",
-  "requiresCompatibilities": [
-    "FARGATE"
-  ],
+    },
     {
       "cpu": 256,
       "essential": true,
