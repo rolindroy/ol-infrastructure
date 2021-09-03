@@ -21,7 +21,7 @@
         }
       ],
       "command": [
-        "consul agent -data-dir=/tmp/consul -retry-join='provider=aws tag_key=consul_env tag_value=mitxonline-###ENV### -advertise=$(curl -s $ECS_CONTAINER_METADATA_URI | jq -r '.Networks[0].IPv4Addresses[0]') -dns-port=53"
+        "consul agent -data-dir=/tmp/consul -retry-join='provider=aws tag_key=consul_env tag_value=###ENV### -advertise=$(curl -s $ECS_CONTAINER_METADATA_URI | jq -r '.Networks[0].IPv4Addresses[0]') -dns-port=53"
       ],
       "portMappings": [
         {
