@@ -21,14 +21,14 @@ ENV LC_ALL en_US.UTF-8
 RUN useradd -m --shell /bin/false app
 RUN mkdir -p /edx/app/log/ /edx/app/xqueue
 RUN touch /edx/app/log/edx.log /edx/app/xqueue/xqueue_cfg.yml
-RUN chown app:app /edx/app/log/edx.log /edx/app/xqueue/xqueue_cfg.yml
+#RUN chown app:app /edx/app/log/edx.log /edx/app/xqueue/xqueue_cfg.yml
 
 WORKDIR /edx/app/xqueue
 COPY ${app_dir}/requirements /edx/app/xqueue/requirements
 COPY ${app_dir}/requirements.txt /edx/app/xqueue/requirements.txt
 RUN pip install -r requirements.txt
 
-USER app
+#USER app
 
 EXPOSE 8040
 
