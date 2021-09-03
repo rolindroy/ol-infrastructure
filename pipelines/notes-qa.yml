@@ -55,7 +55,7 @@ jobs:
             args:
               - -c
               - |
-                set -eux
+                set -eux -o pipefail
                 apk update
                 apk add --no-progress --no-cache aws-cli jq
 
