@@ -2,6 +2,8 @@
 
 set -eux
 
+echo "$(echo -n 'nameserver 127.0.0.1'; cat /etc/resolv.conf)" > /etc/resolv.conf
+
 export XQUEUE_CFG=/edx/app/xqueue/xqueue_cfg.yml
 export DJANGO_SETTINGS_MODULE=xqueue.production
 SSM_CONFIG=/mitxonline-qa/xqueue/xqueue_cfg
