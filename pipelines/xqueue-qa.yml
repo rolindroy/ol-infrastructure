@@ -80,6 +80,7 @@ jobs:
                   -e "s;###NAME###;${FAMILY};g" \
                   -e "s;###LOG_GROUP###;${LOG_GROUP};g" \
                   -e "s;###REGION###;${REGION};g" \
+                  -e "s;###ENV###;((environment));g" \
                   -i "config-repo/dockerfiles/xqueue/taskdef.json"
                 
                 cat config-repo/dockerfiles/xqueue/taskdef.json

@@ -3,6 +3,55 @@
     {
       "cpu": 256,
       "essential": true,
+      "image": "consul",
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "###LOG_GROUP###",
+          "awslogs-region": "###REGION###",
+          "awslogs-stream-prefix": "xqueue-consul"
+        }
+      },
+      "memory": 512,
+      "name": "consul",
+      "environment": [
+        {
+          "name": "CONSUL_BIND_INTERFACE",
+          "value": "eth0"
+        }
+      ],
+      "command": [
+        "consul agent -data-dir=/tmp/consul -retry-join='provider=aws tag_key=consul_env tag_value=mitxonline-###ENV### -advertise=$(curl -s $ECS_CONTAINER_METADATA_URI | jq -r '.Networks[0].IPv4Addresses[0]') -dns-port=53"
+      ],
+      "portMappings": [
+        {
+          "hostPort": 8500,
+          "protocol": "tcp",
+          "containerPort": 8500
+        },
+        {
+          "hostPort": 8500,
+          "protocol": "udp",
+          "containerPort": 8500
+        }
+      ],
+      "entryPoint": [
+        "/bin/sh",
+        "-ec"
+      ]
+    }
+  ],
+  "cpu": "256",
+  "executionRoleArn": "###EXECUTION_ROLE_ARN###",
+  "family": "###FAMILY###",
+  "memory": "512",
+  "networkMode": "awsvpc",
+  "requiresCompatibilities": [
+    "FARGATE"
+  ],
+    {
+      "cpu": 256,
+      "essential": true,
       "image": "###IMAGE###",
       "logConfiguration": {
         "logDriver": "awslogs",
