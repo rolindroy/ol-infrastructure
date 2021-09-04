@@ -59,15 +59,15 @@ jobs:
                 apk update
                 apk add --no-progress --no-cache aws-cli jq
 
-                FAMILY=xqueue-mitxonline-qa
-                CLUSTER=edx-ida_mitxonline-qa
+                FAMILY=xqueue-((environment))
+                CLUSTER=edx-ida_((environment))
 
                 aws ecs describe-task-definition --task-definition "${FAMILY}" > deployed-taskdef.json
 
                 TAG=$(head -1 app-repo/.git/ref)
 
                 IMAGE="((ecr-uri)):${TAG}"
-                LOG_GROUP=/ecs/mitxonline-qa
+                LOG_GROUP=/ecs/((environment))
                 TASK_ROLE_ARN=$(< deployed-taskdef.json jq '.taskDefinition.taskRoleArn' -r)
                 EXECUTION_ROLE_ARN=$(< deployed-taskdef.json jq '.taskDefinition.executionRoleArn' -r)
                 REGION=us-east-1

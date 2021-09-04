@@ -8,6 +8,9 @@ export XQUEUE_CFG=/edx/app/xqueue/xqueue_cfg.yml
 export DJANGO_SETTINGS_MODULE=xqueue.production
 SSM_CONFIG=/mitxonline-qa/xqueue/xqueue_cfg
 
+# Now that have multiple containers on this NIC, it can take a second for networking to come up. 
+sleep 30
+
 aws ssm get-parameter --name "${SSM_CONFIG}" --with-decryption | jq -r '.Parameter.Value' > "${XQUEUE_CFG}"
 
 ./manage.py migrate
