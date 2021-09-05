@@ -2,7 +2,12 @@
 
 set -eux
 
-echo "$(echo -n 'nameserver 127.0.0.1'; cat /etc/resolv.conf)" > /etc/resolv.conf
+
+sed -i '1 i\nameserver 127.0.0.1' /etc/resolv.conf
+
+# cat for testing only
+cat /etc/resolv.conf
+
 
 export XQUEUE_CFG=/edx/app/xqueue/xqueue_cfg.yml
 export DJANGO_SETTINGS_MODULE=xqueue.production
