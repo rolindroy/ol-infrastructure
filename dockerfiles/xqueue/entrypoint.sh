@@ -2,7 +2,7 @@
 
 set -eux
 
-
+sleep 5
 sed -i '1 i\nameserver 127.0.0.1' /etc/resolv.conf
 
 # cat for testing only
