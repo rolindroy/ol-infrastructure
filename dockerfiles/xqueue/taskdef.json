@@ -107,6 +107,10 @@
         }
       },
       "name": "consul-discovery",
+      "entryPoint": [
+        "/bin/sh",
+        "-ec"
+      ],
       "command": [
 	"echo 'sleeping 60 while waiting for networking' && sleep 60 && aws ec2 describe-instances --filter Name=tag:consul_env,Values=###ENV### --query 'Reservations[*].Instances[*].[PrivateIpAddress]' --output text > /tmp/consul/server_ips.txt && echo 'Success! IPs found and saved to /tmp/consul/server_ips.txt'"
       ],
