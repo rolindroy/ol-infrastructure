@@ -30,9 +30,18 @@ jobs:
       - get: config-repo
 
       - task: download-vault
-        path: sh
-        args: |
-          curl https://releases.hashicorp.com/vault/1.8.2/vault_1.8.2_linux_amd64.zip > vault.zip
+        config: 
+          platform: linux
+          image_resource:
+            type: registry-image
+            source: { repository: alpine }
+          run:
+            path: sh
+            args: |
+              - -exc 
+              - apk add curl; curl https://releases.hashicorp.com/vault/1.8.2/vault_1.8.2_linux_amd64.zip > vault.zip
+          outputs:
+            - name: vault.zip
 
       - put: image
         params:
