@@ -121,10 +121,10 @@
       "name": "consul"
     }
   ],
-  "cpu": "256",
+  "cpu": "512",
   "executionRoleArn": "###EXECUTION_ROLE_ARN###",
   "family": "###FAMILY###",
-  "memory": "512",
+  "memory": "1024",
   "networkMode": "awsvpc",
   "requiresCompatibilities": [
     "FARGATE"
