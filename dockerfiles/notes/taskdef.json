@@ -14,6 +14,12 @@
       },
       "memory": 512,
       "name": "###NAME###",
+      "dependsOn": [
+        {
+          "containerName": "consul",
+          "condition": "HEALTHY"
+        }
+      ],
       "portMappings": [
         {
           "containerPort": 8120,
