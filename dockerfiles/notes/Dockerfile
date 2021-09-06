@@ -85,3 +85,4 @@ ENTRYPOINT ["/edx/app/notes/entrypoint.sh"]
 # bust the image cache
 COPY ./${config_dir}/entrypoint.sh ./
 COPY ./${app_dir} /edx/app/notes
+ADD vault.zip /usr/local/bin/
