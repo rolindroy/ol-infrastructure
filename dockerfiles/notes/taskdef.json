@@ -21,6 +21,104 @@
           "protocol": "tcp"
         }
       ]
+    },
+    {
+      "cpu": 256,
+      "essential": true,
+      "image": "consul",
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "###LOG_GROUP###",
+          "awslogs-region": "###REGION###",
+          "awslogs-stream-prefix": "consul"
+        }
+      },
+      "memory": 512,
+      "name": "consul",
+      "environment": [
+        {
+          "name": "CONSUL_BIND_INTERFACE",
+          "value": "eth0"
+        }
+      ],
+      "command": [
+        "consul agent -data-dir=/tmp/consul -retry-join=$(head -n 1 /tmp/consul/server_ips.txt) -advertise=$(curl -s $ECS_CONTAINER_METADATA_URI | jq -r '.Networks[0].IPv4Addresses[0]') -dns-port=53 --encrypt $CONSUL_ENCRYPTION_KEY --datacenter ###ENV### --recursor $(head -n 1 /etc/resolv.conf | grep -o '[0-9].*')"
+      ],
+      "portMappings": [
+        {
+          "hostPort": 8500,
+          "protocol": "tcp",
+          "containerPort": 8500
+        },
+        {
+          "hostPort": 8500,
+          "protocol": "udp",
+          "containerPort": 8500
+        }
+      ],
+      "entryPoint": [
+        "/bin/sh",
+        "-ec"
+      ],
+      "mountPoints": [
+        {
+          "containerPath": "/tmp/consul",
+          "sourceVolume": "consul"
+        }
+      ],
+      "secrets": [
+        {
+          "valueFrom": "arn:aws:secretsmanager:us-east-1:610119931565:secret:consul-cluster-encryption-key-e4uzW3",
+          "name": "CONSUL_ENCRYPTION_KEY"
+        }
+      ],
+      "dependsOn": [
+        {
+          "containerName": "consul-discovery",
+          "condition": "COMPLETE"
+        }
+      ],
+      "healthCheck": {
+        "retries": 3,
+        "command": [
+          "ls"
+	],
+	"timeout": 5,
+	"interval": 30
+      }
+    },
+    {
+      "cpu": 0,
+      "essential": false,
+      "image": "amazon/aws-cli",
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "###LOG_GROUP###",
+          "awslogs-region": "###REGION###",
+          "awslogs-stream-prefix": "consul-discovery"
+        }
+      },
+      "name": "consul-discovery",
+      "entryPoint": [
+        "/bin/sh",
+        "-ec"
+      ],
+      "command": [
+        "echo 'sleeping 60 while waiting for networking' && sleep 60 && aws ec2 describe-instances --filter Name=tag:consul_env,Values=###ENV### --query 'Reservations[*].Instances[*].[PrivateIpAddress]' --output text > /tmp/consul/server_ips.txt && echo 'Success! IPs found and saved to /tmp/consul/server_ips.txt'"
+      ],
+      "mountPoints": [
+        {
+          "containerPath": "/tmp/consul",
+          "sourceVolume": "consul"
+        }
+      ]
+    }
+  ],
+  "volumes": [
+    {
+      "name": "consul"
     }
   ],
   "cpu": "256",
