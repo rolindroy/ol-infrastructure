@@ -79,8 +79,8 @@ jobs:
                   -e "s;###FAMILY###;${FAMILY};g" \
                   -e "s;###NAME###;${FAMILY};g" \
                   -e "s;###LOG_GROUP###;${LOG_GROUP};g" \
-                  -e "s;###REGION###;${REGION};g" \
                   -e "s;###ENV###;mitxonline-qa;g" \
+                  -e "s;###REGION###;${REGION};g" \
                   -i "config-repo/dockerfiles/notes/taskdef.json"
                 
                 cat config-repo/dockerfiles/notes/taskdef.json
