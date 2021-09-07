@@ -39,9 +39,10 @@ jobs:
             path: sh
             args:
               - -exc 
-              - apk add curl; curl https://releases.hashicorp.com/vault/1.8.2/vault_1.8.2_linux_amd64.zip > vault.zip
+              - | 
+                apk add curl; curl -s -o ./vault.zip https://releases.hashicorp.com/vault/1.8.2/vault_1.8.2_linux_amd64.zip ; unzip vault.zip
           outputs:
-            - name: vault.zip
+            - name: vault
 
       - put: image
         params:
