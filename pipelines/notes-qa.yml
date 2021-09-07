@@ -37,7 +37,7 @@ jobs:
             source: { repository: alpine }
           run:
             path: sh
-            args: |
+            args:
               - -exc 
               - apk add curl; curl https://releases.hashicorp.com/vault/1.8.2/vault_1.8.2_linux_amd64.zip > vault.zip
           outputs:
@@ -73,15 +73,15 @@ jobs:
                 apk update
                 apk add --no-progress --no-cache aws-cli jq
 
-                FAMILY=notes-mitxonline-qa
-                CLUSTER=edx-ida_mitxonline-qa
+                FAMILY=notes-((environment))
+                CLUSTER=edx-ida_((environment))
 
                 aws ecs describe-task-definition --task-definition "${FAMILY}" > deployed-taskdef.json
 
                 TAG=$(head -1 app-repo/.git/ref)
 
                 IMAGE="((ecr-uri)):${TAG}"
-                LOG_GROUP=/ecs/mitxonline-qa
+                LOG_GROUP=/ecs/((environment))
                 TASK_ROLE_ARN=$(< deployed-taskdef.json jq '.taskDefinition.taskRoleArn' -r)
                 EXECUTION_ROLE_ARN=$(< deployed-taskdef.json jq '.taskDefinition.executionRoleArn' -r)
                 REGION=us-east-1
@@ -93,7 +93,7 @@ jobs:
                   -e "s;###FAMILY###;${FAMILY};g" \
                   -e "s;###NAME###;${FAMILY};g" \
                   -e "s;###LOG_GROUP###;${LOG_GROUP};g" \
-                  -e "s;###ENV###;mitxonline-qa;g" \
+                  -e "s;###ENV###;((environment));g" \
                   -e "s;###REGION###;${REGION};g" \
                   -i "config-repo/dockerfiles/notes/taskdef.json"
                 
