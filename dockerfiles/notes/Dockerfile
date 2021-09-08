@@ -40,7 +40,8 @@ RUN apt-get update && \
     python3.8-distutils \
     python3.8-venv \
     jq \
-    awscli -qy && \
+    awscli \
+    curl -qy && \
     rm -rf /var/lib/apt/lists/*
 
 ENV VIRTUAL_ENV=/edx/app/edx-notes-api/venvs/edx-notes-api
@@ -57,6 +58,12 @@ ENV DJANGO_SETTINGS_MODULE notesserver.settings.yaml_config
 
 EXPOSE 8120
 RUN useradd -m --shell /bin/false app
+
+RUN curl https://releases.hashicorp.com/vault/1.8.2/vault_1.8.2_linux_amd64.zip > /tmp/vault.zip && \
+  cd /usr/local/bin && \
+  unzip /tmp/vault.zip && \
+  chmod +x vault.zip && \
+  rm /tmp/vault.zip
 
 WORKDIR /edx/app/notes
 
