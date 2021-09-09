@@ -63,7 +63,7 @@ RUN useradd -m --shell /bin/false app
 RUN curl https://releases.hashicorp.com/vault/1.8.2/vault_1.8.2_linux_amd64.zip > /tmp/vault.zip && \
   cd /usr/local/bin && \
   unzip /tmp/vault.zip && \
-  chmod +x vault.zip && \
+  chmod +x vault && \
   rm /tmp/vault.zip
 
 WORKDIR /edx/app/notes
@@ -93,4 +93,3 @@ ENTRYPOINT ["/edx/app/notes/entrypoint.sh"]
 # bust the image cache
 COPY ./${config_dir}/entrypoint.sh ./
 COPY ./${app_dir} /edx/app/notes
-COPY ./vault /usr/local/bin/vault
