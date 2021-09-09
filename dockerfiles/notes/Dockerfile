@@ -41,7 +41,8 @@ RUN apt-get update && \
     python3.8-venv \
     jq \
     awscli \
-    curl -qy && \
+    curl \
+    unzip -qy && \
     rm -rf /var/lib/apt/lists/*
 
 ENV VIRTUAL_ENV=/edx/app/edx-notes-api/venvs/edx-notes-api
