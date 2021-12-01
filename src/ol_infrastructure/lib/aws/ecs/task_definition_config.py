@@ -5,7 +5,7 @@ from pydantic import BaseModel, PositiveInt
 
 from bridge.lib.magic_numbers import HALF_GIGABYTE_MB, ONE_GIGAHERTZ
 from ol_infrastructure.lib.aws.ecs.container_definition_config import (
-    OLFargateContainerDefinitionConfig,
+    ContainerDefinition,
 )
 
 
@@ -13,7 +13,7 @@ class OLFargateTaskDefinitionConfig(BaseModel):
     """Maps to 'family' property which is unique name for Task Definition."""
 
     task_def_name: str
-    # ARN of IAM role use for task execution role. Default will be a role created w/
+    # ARN of IAM role to use for task execution role. Default will be a role created w/
     # AmazonECSTaskExecutionRolePolicy This role allows ECS Agent and Docker daemon to
     # make calls such as:
     # - sending logs to CloudWatch
@@ -29,7 +29,7 @@ class OLFargateTaskDefinitionConfig(BaseModel):
     # Memory allotment for task definition
     memory_mib: PositiveInt = PositiveInt(HALF_GIGABYTE_MB)
     # List of container definitions that will be attached to task
-    container_definition_configs: List[OLFargateContainerDefinitionConfig]
+    container_definition_configs: List[ContainerDefinition]
 
     class Config:  # noqa: WPS431, D106
         arbitrary_types_allowed = True

@@ -12,7 +12,7 @@ from ol_infrastructure.components.aws.alb_fargate_service import (
     OLApplicationLoadBalancedFargateService,
 )
 from ol_infrastructure.lib.aws.ecs.container_definition_config import (
-    OLFargateContainerDefinitionConfig,
+    ContainerDefinition,
 )
 from ol_infrastructure.lib.aws.ecs.task_definition_config import (
     OLFargateTaskDefinitionConfig,
@@ -95,7 +95,7 @@ class TestClassBaseAlbFargateArguments:
             task_definition_config=OLFargateTaskDefinitionConfig(
                 task_def_name="task-test",
                 container_definition_configs=[
-                    OLFargateContainerDefinitionConfig(
+                    ContainerDefinition(
                         container_name="nginx",
                         image="nginx",
                         attach_to_load_balancer=True,

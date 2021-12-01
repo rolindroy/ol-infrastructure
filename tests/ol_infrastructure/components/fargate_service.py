@@ -12,8 +12,8 @@ from ol_infrastructure.components.aws.fargate_service import (
     OLFargateServiceConfig,
 )
 from ol_infrastructure.lib.aws.ecs.container_definition_config import (
-    OLContainerLogConfig,
-    OLFargateContainerDefinitionConfig,
+    ContainerDefinition,
+    EcsLogConfiguration,
 )
 from ol_infrastructure.lib.aws.ecs.task_definition_config import (
     OLFargateTaskDefinitionConfig,
@@ -93,7 +93,7 @@ class TestClassBaseFargateArguments:
             task_definition_config=OLFargateTaskDefinitionConfig(
                 task_def_name="task-test",
                 container_definition_configs=[
-                    OLFargateContainerDefinitionConfig(
+                    ContainerDefinition(
                         container_name="nginx",
                         image="nginx",
                     )
@@ -302,7 +302,7 @@ class TestClassAllFargateArguments:
                 cpu=512,
                 memory_mib=1024,
                 container_definition_configs=[
-                    OLFargateContainerDefinitionConfig(
+                    ContainerDefinition(
                         container_name="nginx",
                         image="nginx",
                         memory=512,
@@ -310,12 +310,12 @@ class TestClassAllFargateArguments:
                         container_port=80,
                         is_essential=True,
                         environment={"var": "nginx"},
-                        log_configuration=OLContainerLogConfig(
+                        log_configuration=EcsLogConfiguration(
                             log_driver="awslogs", options={"awslogs-group": "ecs-nginx"}
                         ),
                         attach_to_load_balancer=False,
                     ),
-                    OLFargateContainerDefinitionConfig(
+                    ContainerDefinition(
                         container_name="otel",
                         image="otel",
                         container_port=4317,
@@ -323,7 +323,7 @@ class TestClassAllFargateArguments:
                         cpu=256,
                         is_essential=False,
                         environment={"var": "otel"},
-                        log_configuration=OLContainerLogConfig(
+                        log_configuration=EcsLogConfiguration(
                             log_driver="awslogs", options={"awslogs-group": "ecs-otel"}
                         ),
                         attach_to_load_balancer=False,

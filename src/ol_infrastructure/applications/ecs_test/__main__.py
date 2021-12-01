@@ -29,8 +29,8 @@ from ol_infrastructure.components.aws.fargate_service import (
     OLFargateServiceConfig,
 )
 from ol_infrastructure.lib.aws.ecs.container_definition_config import (
-    OLContainerLogConfig,
-    OLFargateContainerDefinitionConfig,
+    ContainerDefinition,
+    EcsLogConfiguration,
 )
 from ol_infrastructure.lib.aws.ecs.task_definition_config import (
     OLFargateTaskDefinitionConfig,
@@ -90,7 +90,7 @@ task_config = OLFargateTaskDefinitionConfig(
     cpu=ONE_GIGAHERTZ / 2,
     memory_mib=ONE_GIGABYTE_MB,
     container_definition_configs=[
-        OLFargateContainerDefinitionConfig(
+        ContainerDefinition(
             container_name="nginx",
             image="nginx",
             container_port=DEFAULT_HTTP_PORT,
@@ -99,7 +99,7 @@ task_config = OLFargateTaskDefinitionConfig(
             cpu=ONE_GIGAHERTZ / 2,
             is_essential=True,
             environment={"SOME_VAR": "true"},
-            log_configuration=OLContainerLogConfig(
+            log_configuration=EcsLogConfiguration(
                 log_driver="awslogs",
                 options={
                     "awslogs-group": "ecs/test/log_group",
