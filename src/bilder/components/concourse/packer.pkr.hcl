@@ -21,14 +21,16 @@ source "amazon-ebs" "concourse" {
   force_deregister        = true
   instance_type           = "t3a.medium"
   run_volume_tags = {
-    OU      = "${local.business_unit}"
-    app     = "${local.app_name}"
-    purpose = "concourse-${var.node_type}"
+    OU                = "${local.business_unit}"
+    app               = "${local.app_name}"
+    purpose           = "concourse-${var.node_type}"
+    custodian_managed = "true"
   }
   snapshot_tags = {
-    OU      = "${local.business_unit}"
-    app     = "${local.app_name}"
-    purpose = "${local.app_name}-${var.node_type}"
+    OU                = "${local.business_unit}"
+    app               = "${local.app_name}"
+    purpose           = "${local.app_name}-${var.node_type}"
+    custodian_managed = "true"
   }
   # Base all builds off of the most recent Debian 10 image built by the Debian organization.
   source_ami_filter {
@@ -48,10 +50,11 @@ source "amazon-ebs" "concourse" {
     random = true
   }
   tags = {
-    Name    = "${local.app_name}-${var.node_type}"
-    OU      = "${local.business_unit}"
-    app     = "${local.app_name}"
-    purpose = "${local.app_name}-${var.node_type}"
+    Name              = "${local.app_name}-${var.node_type}"
+    OU                = "${local.business_unit}"
+    app               = "${local.app_name}"
+    purpose           = "${local.app_name}-${var.node_type}"
+    custodian_managed = "true"
   }
 }
 

@@ -34,20 +34,23 @@ source "amazon-ebs" "edxapp" {
     volume_size = 25
   }
   run_tags = {
-    Name    = "${local.app_name}-${var.node_type}-packer-builder"
-    OU      = "${local.business_unit}"
-    app     = "${local.app_name}"
-    purpose = "${local.app_name}-${var.node_type}"
+    Name              = "${local.app_name}-${var.node_type}-packer-builder"
+    OU                = "${local.business_unit}"
+    app               = "${local.app_name}"
+    purpose           = "${local.app_name}-${var.node_type}"
+    custodian_managed = "true"
   }
   run_volume_tags = {
-    OU      = "${local.business_unit}"
-    app     = "${local.app_name}"
-    purpose = "edx-${var.node_type}"
+    OU                = "${local.business_unit}"
+    app               = "${local.app_name}"
+    purpose           = "edx-${var.node_type}"
+    custodian_managed = "true"
   }
   snapshot_tags = {
-    OU      = "${local.business_unit}"
-    app     = "${local.app_name}"
-    purpose = "${local.app_name}-${var.node_type}"
+    OU                = "${local.business_unit}"
+    app               = "${local.app_name}"
+    purpose           = "${local.app_name}-${var.node_type}"
+    custodian_managed = "true"
   }
   # Base all builds off of the most recent Ubuntu 20.04 image built by the Canonical organization.
   source_ami_filter {
@@ -68,10 +71,11 @@ source "amazon-ebs" "edxapp" {
     random = true
   }
   tags = {
-    Name    = "${local.app_name}-${var.node_type}"
-    OU      = "${local.business_unit}"
-    app     = "${local.app_name}"
-    purpose = "${local.app_name}-${var.node_type}"
+    Name              = "${local.app_name}-${var.node_type}"
+    OU                = "${local.business_unit}"
+    app               = "${local.app_name}"
+    purpose           = "${local.app_name}-${var.node_type}"
+    custodian_managed = "true"
   }
 }
 

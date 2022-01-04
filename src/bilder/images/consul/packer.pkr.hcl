@@ -20,12 +20,14 @@ source "amazon-ebs" "consul" {
   ami_virtualization_type = "hvm"
   instance_type           = "t3a.medium"
   run_volume_tags = {
-    OU      = "${local.business_unit}"
-    app     = "${local.app_name}"
+    OU                = "${local.business_unit}"
+    app               = "${local.app_name}"
+    custodian_managed = "true"
   }
   snapshot_tags = {
-    OU      = "${local.business_unit}"
-    app     = "${local.app_name}"
+    OU                = "${local.business_unit}"
+    app               = "${local.app_name}"
+    custodian_managed = "true"
   }
   # Base all builds off of the most recent Debian 10 image built by the Debian organization.
   source_ami_filter {
@@ -45,9 +47,10 @@ source "amazon-ebs" "consul" {
     random = true
   }
   tags = {
-    Name    = "${local.app_name}-ami"
-    OU      = "${local.business_unit}"
-    app     = "${local.app_name}"
+    Name              = "${local.app_name}-ami"
+    OU                = "${local.business_unit}"
+    app               = "${local.app_name}"
+    custodian_managed = "true"
   }
 }
 
