@@ -1,0 +1,288 @@
+apiVersion: grizzly.grafana.com/v1alpha1
+kind: Dashboard
+metadata:
+    folder: general
+    name: cardinality-management-metrics-detail
+spec:
+    annotations:
+        list: []
+    editable: false
+    gnetId: null
+    graphTooltip: 0
+    links:
+        - asDropdown: true
+          icon: dashboard
+          includeVars: false
+          keepTime: false
+          tags: []
+          targetBlank: false
+          title: Cardinality management - overview
+          tooltip: ""
+          type: link
+          url: /d/cardinality-management/?${datasource:queryparam}
+    panels:
+        - datasource: null
+          gridPos:
+            h: 18
+            w: 6
+            x: 0
+            "y": 0
+          id: 32
+          options:
+            content: "This dashboard helps you understand the cardinality of a single metric. It shows you the count of series with this metric name and how that count relates to the total number of time series in your data source. Then it helps you understand which labels associated with that metric have the greatest impact on its cardinality. \n\nEach time series is a unique combination of key-value label pairs. Therefore a label key with a lot of values can create a lot of time series for a particular metric. If you’re trying to decrease the cardinality of a metric, start by looking at the labels with the highest number of values. \n\nUse the selector at the top of the page to pick which metric you’d like to inspect. \n"
+            mode: markdown
+          pluginVersion: 8.0.6
+          title: "\U0001F4A1Tips"
+          type: text
+        - datasource: ${cardinality}
+          description: The number of time series with metric name ${metric}.
+          fieldConfig:
+            defaults:
+                color:
+                    fixedColor: text
+                    mode: fixed
+                mappings: []
+                thresholds:
+                    mode: absolute
+                    steps: []
+            overrides: []
+          gridPos:
+            h: 2
+            w: 9
+            x: 6
+            "y": 0
+          id: 27
+          options:
+            colorMode: none
+            graphMode: area
+            justifyMode: center
+            orientation: vertical
+            reduceOptions:
+                calcs:
+                    - lastNotNull
+                fields: /^Number of series$/
+                values: false
+            text: {}
+            textMode: value
+          pluginVersion: 8.0.6
+          targets:
+            - cardinalityType: series
+              parameterList:
+                - ${metric}
+              refId: A
+              resultType: subtotal
+              targetDatasource: ${datasource}
+          title: Number of series
+          type: stat
+        - datasource: ${cardinality}
+          description: Count all time series with metric name ${metric} and express that as a percentage of the total number of time series in this data source.
+          fieldConfig:
+            defaults:
+                color:
+                    fixedColor: text
+                    mode: fixed
+                mappings: []
+                thresholds:
+                    mode: absolute
+                    steps: []
+            overrides: []
+          gridPos:
+            h: 2
+            w: 9
+            x: 15
+            "y": 0
+          id: 28
+          options:
+            colorMode: none
+            graphMode: area
+            justifyMode: center
+            orientation: vertical
+            reduceOptions:
+                calcs:
+                    - lastNotNull
+                fields: /^Percentage of total series$/
+                values: false
+            text: {}
+            textMode: value
+          pluginVersion: 8.0.6
+          targets:
+            - cardinalityType: series
+              parameterList:
+                - ${metric}
+              refId: A
+              resultType: subtotal
+              targetDatasource: ${datasource}
+          title: Percentage of total series
+          type: stat
+        - datasource: null
+          description: Shows the labels attached to metric ${metric}. You see both the label name and then the number of values for each label name. Label names are sorted by the number of values they have in descending order.
+          gridPos:
+            h: 1
+            w: 18
+            x: 6
+            "y": 2
+          id: 30
+          options:
+            content: ""
+            mode: markdown
+          pluginVersion: 8.0.6
+          title: Labels attached to metric ${metric}
+          type: text
+        - datasource: ${cardinality}
+          description: ""
+          fieldConfig:
+            defaults:
+                color:
+                    mode: thresholds
+                links:
+                    - title: 'View drill down of label: ${__data.fields.Label}'
+                      url: d/cardinality-management-label-detail/?var-label=${__data.fields.Label}&${datasource:queryparam}
+                mappings: []
+                thresholds:
+                    mode: percentage
+                    steps:
+                        - color: blue
+                          value: null
+                        - color: yellow
+                          value: 50
+                        - color: red
+                          value: 100
+            overrides: []
+          gridPos:
+            h: 15
+            w: 12
+            x: 6
+            "y": 3
+          id: 10
+          options:
+            labelFields: []
+            tiling: treemapSquarify
+          pluginVersion: 8.0.6
+          targets:
+            - cardinalityType: metrics
+              limit: 500
+              parameterList:
+                - ${metric}
+              refId: A
+              resultType: details
+              targetDatasource: ${datasource}
+          transformations: []
+          type: marcusolsson-treemap-panel
+        - datasource: ${cardinality}
+          description: ""
+          fieldConfig:
+            defaults:
+                color:
+                    mode: fixed
+                custom:
+                    align: auto
+                    displayMode: auto
+                mappings: []
+                thresholds:
+                    mode: absolute
+                    steps:
+                        - color: green
+                          value: null
+                        - color: red
+                          value: 80
+            overrides:
+                - matcher:
+                    id: byName
+                    options: Label
+                  properties:
+                    - id: links
+                      value:
+                        - title: 'View detailed cardinality dashboard for label: ${__data.fields.Label}'
+                          url: d/cardinality-management-label-detail/?var-label=${__data.fields.Label}&${datasource:queryparam}
+          gridPos:
+            h: 15
+            w: 6
+            x: 18
+            "y": 3
+          id: 21
+          options:
+            footer:
+                fields: ""
+                reducer:
+                    - sum
+                show: false
+            showHeader: true
+            sortBy: []
+          pluginVersion: 8.0.6
+          targets:
+            - cardinalityType: metrics
+              exampleCount: "3"
+              parameterList:
+                - ${metric}
+              refId: A
+              resultType: details
+              targetDatasource: ${datasource}
+          type: table
+    refresh: 10s
+    schemaVersion: 30
+    style: dark
+    tags:
+        - cardinality-management
+    templating:
+        list:
+            - current:
+                selected: false
+              description: Datasource adapter to provide metrics cardinality
+              error: null
+              hide: 2
+              includeAll: false
+              label: null
+              multi: false
+              name: cardinality
+              options: []
+              query: grafana-cardinality-datasource
+              refresh: 1
+              regex: ""
+              skipUrlSync: false
+              type: datasource
+            - current:
+                selected: false
+              description: Choose a Prometheus data source for cardinality management
+              error: null
+              hide: 0
+              includeAll: false
+              label: Data source
+              multi: false
+              name: datasource
+              options: []
+              query: prometheus
+              queryValue: ""
+              refresh: 2
+              regex: ""
+              skipUrlSync: false
+              type: datasource
+            - allValue: null
+              current:
+                selected: false
+              datasource: ${cardinality}
+              definition: metrics list {"targetDatasource":"${datasource}"}
+              description: null
+              error: null
+              hide: 0
+              includeAll: false
+              label: Metric
+              multi: false
+              name: metric
+              options: []
+              query:
+                cardinalityType: metrics
+                resultType: list
+                targetDatasource: ${datasource}
+              refresh: 2
+              regex: ""
+              skipUrlSync: false
+              sort: 1
+              type: query
+    time:
+        from: now-24h
+        to: now
+    timepicker:
+        hidden: true
+    timezone: ""
+    title: 2. Cardinality management - metrics
+    uid: cardinality-management-metrics-detail

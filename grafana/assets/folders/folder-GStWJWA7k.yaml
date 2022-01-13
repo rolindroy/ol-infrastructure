@@ -1,0 +1,18 @@
+apiVersion: grizzly.grafana.com/v1alpha1
+kind: DashboardFolder
+metadata:
+    name: GStWJWA7k
+spec:
+    canAdmin: false
+    canEdit: true
+    canSave: true
+    created: "2021-12-28T14:59:21Z"
+    createdBy: Anonymous
+    hasAcl: false
+    id: 15
+    title: GrafanaCloud
+    uid: GStWJWA7k
+    updated: "2021-12-28T14:59:21Z"
+    updatedBy: Anonymous
+    url: /dashboards/f/GStWJWA7k/grafanacloud
+    version: 1

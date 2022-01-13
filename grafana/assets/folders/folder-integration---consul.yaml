@@ -1,0 +1,18 @@
+apiVersion: grizzly.grafana.com/v1alpha1
+kind: DashboardFolder
+metadata:
+    name: integration---consul
+spec:
+    canAdmin: false
+    canEdit: true
+    canSave: true
+    created: "2021-11-17T19:09:58Z"
+    createdBy: Anonymous
+    hasAcl: false
+    id: 8
+    title: Integration - Consul
+    uid: integration---consul
+    updated: "2021-11-17T19:09:58Z"
+    updatedBy: Anonymous
+    url: /dashboards/f/integration---consul/integration-consul
+    version: 1

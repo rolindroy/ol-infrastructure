@@ -1,0 +1,18 @@
+apiVersion: grizzly.grafana.com/v1alpha1
+kind: DashboardFolder
+metadata:
+    name: integration---vault
+spec:
+    canAdmin: false
+    canEdit: true
+    canSave: true
+    created: "2021-12-20T19:12:18Z"
+    createdBy: Anonymous
+    hasAcl: false
+    id: 13
+    title: Integration - Vault
+    uid: integration---vault
+    updated: "2021-12-20T19:12:18Z"
+    updatedBy: Anonymous
+    url: /dashboards/f/integration---vault/integration-vault
+    version: 1

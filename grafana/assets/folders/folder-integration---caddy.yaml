@@ -1,0 +1,18 @@
+apiVersion: grizzly.grafana.com/v1alpha1
+kind: DashboardFolder
+metadata:
+    name: integration---caddy
+spec:
+    canAdmin: false
+    canEdit: true
+    canSave: true
+    created: "2021-11-17T19:09:39Z"
+    createdBy: Anonymous
+    hasAcl: false
+    id: 6
+    title: Integration - Caddy
+    uid: integration---caddy
+    updated: "2021-11-17T19:09:39Z"
+    updatedBy: Anonymous
+    url: /dashboards/f/integration---caddy/integration-caddy
+    version: 1

@@ -1,0 +1,1677 @@
+apiVersion: grizzly.grafana.com/v1alpha1
+kind: Dashboard
+metadata:
+    folder: GStWJWA7k
+    name: RAjXdoH7k
+spec:
+    __inputs:
+        - description: ""
+          label: prometheus
+          name: DS_PROMETHEUS
+          pluginId: prometheus
+          pluginName: Prometheus
+          type: datasource
+    __requires:
+        - id: grafana
+          name: Grafana
+          type: grafana
+          version: 7.1.5
+        - id: graph
+          name: Graph
+          type: panel
+          version: ""
+        - id: prometheus
+          name: Prometheus
+          type: datasource
+          version: 1.0.0
+        - id: stat
+          name: Stat
+          type: panel
+          version: ""
+        - id: text
+          name: Text
+          type: panel
+          version: 7.1.0
+    annotations:
+        list: []
+    editable: false
+    gnetId: 7651
+    graphTooltip: 0
+    hideControls: false
+    links: []
+    panels:
+        - gridPos:
+            h: 1
+            w: 24
+            x: 0
+            "y": 0
+          id: 2
+          title: Billable Usage
+          type: row
+        - datasource: grafanacloud-usage
+          fieldConfig:
+            defaults:
+                links: []
+                mappings: []
+                noValue: $0
+                thresholds:
+                    mode: absolute
+                    steps:
+                        - color: rgb(150, 150, 150)
+                          value: null
+                        - color: green
+                          value: 1
+                unit: prefix:$
+          gridPos:
+            h: 6
+            w: 18
+            x: 0
+            "y": 1
+          id: 3
+          links: []
+          options:
+            colorMode: value
+            graphMode: none
+            justifyMode: auto
+            orientation: auto
+            reduceOptions:
+                calcs:
+                    - mean
+                fields: ""
+                values: false
+            textMode: auto
+          pluginVersion: "7"
+          targets:
+            - expr: grafanacloud_org_metrics_overage + grafanacloud_org_logs_overage + grafanacloud_org_traces_overage + grafanacloud_org_grafana_overage
+              format: time_series
+              instant: true
+              intervalFactor: 2
+              legendFormat: Total additional usage
+              refId: A
+            - expr: grafanacloud_org_spend_commit_credit_total > 0
+              format: time_series
+              instant: true
+              intervalFactor: 2
+              legendFormat: Initial spend committed
+              refId: B
+            - expr: grafanacloud_org_spend_commit_balance_total > 0
+              format: time_series
+              instant: true
+              intervalFactor: 2
+              legendFormat: Last month spend commit balance
+              refId: C
+          title: null
+          transparent: false
+          type: stat
+        - content: |-
+            Metrics, Logs and Traces are billed based on ingestion. For Metrics, we bill based on the number of active series using the 95th percentile during the period. [Learn more here](
+            https://grafana.com/docs/grafana-cloud/billing-and-usage/).
+          datasource: null
+          gridPos:
+            h: 6
+            w: 6
+            x: 18
+            "y": 1
+          id: 4
+          mode: markdown
+          title: How Billing Works
+          type: text
+        - datasource: grafanacloud-usage
+          fieldConfig:
+            defaults:
+                links: []
+                mappings: []
+                noValue: "0"
+                thresholds:
+                    mode: absolute
+                    steps:
+                        - color: rgb(150, 150, 150)
+                          value: null
+                unit: short
+          gridPos:
+            h: 4
+            w: 6
+            x: 0
+            "y": 5
+          id: 5
+          links: []
+          options:
+            colorMode: value
+            graphMode: none
+            justifyMode: auto
+            orientation: auto
+            reduceOptions:
+                calcs:
+                    - mean
+                fields: ""
+                values: false
+            textMode: auto
+          pluginVersion: "7"
+          targets:
+            - expr: grafanacloud_org_metrics_billable_series
+              format: time_series
+              instant: true
+              intervalFactor: 2
+              legendFormat: ""
+              refId: A
+          title: Current Billable Metrics Series
+          transparent: false
+          type: stat
+        - datasource: grafanacloud-usage
+          fieldConfig:
+            defaults:
+                links: []
+                mappings: []
+                noValue: $0
+                thresholds:
+                    mode: absolute
+                    steps:
+                        - color: rgb(150, 150, 150)
+                          value: null
+                        - color: green
+                          value: 1
+                unit: prefix:$
+          gridPos:
+            h: 4
+            w: 6
+            x: 0
+            "y": 9
+          id: 6
+          links: []
+          options:
+            colorMode: value
+            graphMode: none
+            justifyMode: auto
+            orientation: auto
+            reduceOptions:
+                calcs:
+                    - mean
+                fields: ""
+                values: false
+            textMode: auto
+          pluginVersion: "7"
+          targets:
+            - expr: grafanacloud_org_metrics_overage
+              format: time_series
+              instant: true
+              intervalFactor: 2
+              legendFormat: ""
+              refId: A
+          title: Current Metrics Additional Usage Amount
+          transparent: false
+          type: stat
+        - aliasColors: {}
+          bars: false
+          dashLength: 10
+          dashes: false
+          datasource: grafanacloud-usage
+          fill: 1
+          fillGradient: 0
+          gridPos:
+            h: 8
+            w: 18
+            x: 6
+            "y": 5
+          id: 7
+          legend:
+            alignAsTable: false
+            avg: false
+            current: false
+            max: false
+            min: false
+            rightSide: false
+            show: true
+            sideWidth: null
+            total: false
+            values: false
+          lines: true
+          linewidth: 1
+          links: []
+          nullPointMode: "null"
+          percentage: false
+          pointradius: 5
+          points: false
+          renderer: flot
+          repeat: null
+          seriesOverrides:
+            - alias: Additional Usage Amount
+              yaxis: 2
+            - alias: Included Series
+              dashes: true
+              fill: 0
+              linewidth: 2
+              transform: constant
+          spaceLength: 10
+          stack: false
+          steppedLine: false
+          targets:
+            - expr: grafanacloud_org_metrics_billable_series
+              format: time_series
+              intervalFactor: 2
+              legendFormat: Billable Series
+              refId: A
+            - expr: grafanacloud_org_metrics_overage
+              format: time_series
+              intervalFactor: 2
+              legendFormat: Additional Usage Amount
+              refId: B
+            - expr: grafanacloud_org_metrics_included_series
+              format: time_series
+              instant: true
+              intervalFactor: 2
+              legendFormat: Included Series
+              refId: C
+          thresholds: []
+          timeFrom: null
+          timeShift: null
+          title: Total Billable Metrics Series
+          tooltip:
+            shared: true
+            sort: 0
+            value_type: individual
+          type: graph
+          xaxis:
+            buckets: null
+            mode: time
+            name: null
+            show: true
+            values: []
+          yaxes:
+            - format: short
+              label: null
+              logBase: 1
+              max: null
+              min: "0"
+              show: true
+            - format: currencyUSD
+              label: null
+              logBase: 1
+              max: null
+              min: "0"
+              show: true
+        - datasource: grafanacloud-usage
+          fieldConfig:
+            defaults:
+                links: []
+                mappings: []
+                noValue: "0"
+                thresholds:
+                    mode: absolute
+                    steps:
+                        - color: rgb(150, 150, 150)
+                          value: null
+                unit: decgbytes
+          gridPos:
+            h: 4
+            w: 6
+            x: 0
+            "y": 13
+          id: 8
+          links: []
+          options:
+            colorMode: value
+            graphMode: none
+            justifyMode: auto
+            orientation: auto
+            reduceOptions:
+                calcs:
+                    - mean
+                fields: ""
+                values: false
+            textMode: auto
+          pluginVersion: "7"
+          targets:
+            - expr: grafanacloud_org_logs_usage
+              format: time_series
+              instant: true
+              intervalFactor: 2
+              legendFormat: ""
+              refId: A
+          title: Current Billable Logs Usage
+          transparent: false
+          type: stat
+        - datasource: grafanacloud-usage
+          fieldConfig:
+            defaults:
+                links: []
+                mappings: []
+                noValue: $0
+                thresholds:
+                    mode: absolute
+                    steps:
+                        - color: rgb(150, 150, 150)
+                          value: null
+                        - color: green
+                          value: 1
+                unit: prefix:$
+          gridPos:
+            h: 4
+            w: 6
+            x: 0
+            "y": 17
+          id: 9
+          links: []
+          options:
+            colorMode: value
+            graphMode: none
+            justifyMode: auto
+            orientation: auto
+            reduceOptions:
+                calcs:
+                    - mean
+                fields: ""
+                values: false
+            textMode: auto
+          pluginVersion: "7"
+          targets:
+            - expr: grafanacloud_org_logs_overage
+              format: time_series
+              instant: true
+              intervalFactor: 2
+              legendFormat: ""
+              refId: A
+          title: Current Logs Additional Usage Amount
+          transparent: false
+          type: stat
+        - aliasColors: {}
+          bars: false
+          dashLength: 10
+          dashes: false
+          datasource: grafanacloud-usage
+          fill: 1
+          fillGradient: 0
+          gridPos:
+            h: 8
+            w: 18
+            x: 6
+            "y": 13
+          id: 10
+          legend:
+            alignAsTable: false
+            avg: false
+            current: false
+            max: false
+            min: false
+            rightSide: false
+            show: true
+            sideWidth: null
+            total: false
+            values: false
+          lines: true
+          linewidth: 1
+          links: []
+          nullPointMode: "null"
+          percentage: false
+          pointradius: 5
+          points: false
+          renderer: flot
+          repeat: null
+          seriesOverrides:
+            - alias: Additional Usage Amount
+              yaxis: 2
+            - alias: Included Usage
+              dashes: true
+              fill: 0
+              linewidth: 2
+              transform: constant
+          spaceLength: 10
+          stack: false
+          steppedLine: false
+          targets:
+            - expr: grafanacloud_org_logs_usage
+              format: time_series
+              intervalFactor: 2
+              legendFormat: Billable Usage
+              refId: A
+            - expr: grafanacloud_org_logs_overage
+              format: time_series
+              intervalFactor: 2
+              legendFormat: Additional Usage Amount
+              refId: B
+            - expr: grafanacloud_org_logs_included_usage
+              format: time_series
+              instant: true
+              intervalFactor: 2
+              legendFormat: Included Usage
+              refId: C
+          thresholds: []
+          timeFrom: null
+          timeShift: null
+          title: Total Billable Logs Usage
+          tooltip:
+            shared: true
+            sort: 0
+            value_type: individual
+          type: graph
+          xaxis:
+            buckets: null
+            mode: time
+            name: null
+            show: true
+            values: []
+          yaxes:
+            - format: decgbytes
+              label: null
+              logBase: 1
+              max: null
+              min: "0"
+              show: true
+            - format: currencyUSD
+              label: null
+              logBase: 1
+              max: null
+              min: "0"
+              show: true
+        - datasource: grafanacloud-usage
+          fieldConfig:
+            defaults:
+                links: []
+                mappings: []
+                noValue: "0"
+                thresholds:
+                    mode: absolute
+                    steps:
+                        - color: rgb(150, 150, 150)
+                          value: null
+                unit: decgbytes
+          gridPos:
+            h: 4
+            w: 6
+            x: 0
+            "y": 21
+          id: 11
+          links: []
+          options:
+            colorMode: value
+            graphMode: none
+            justifyMode: auto
+            orientation: auto
+            reduceOptions:
+                calcs:
+                    - mean
+                fields: ""
+                values: false
+            textMode: auto
+          pluginVersion: "7"
+          targets:
+            - expr: grafanacloud_org_traces_usage
+              format: time_series
+              instant: true
+              intervalFactor: 2
+              legendFormat: ""
+              refId: A
+          title: Current Billable Traces Usage
+          transparent: false
+          type: stat
+        - datasource: grafanacloud-usage
+          fieldConfig:
+            defaults:
+                links: []
+                mappings: []
+                noValue: $0
+                thresholds:
+                    mode: absolute
+                    steps:
+                        - color: rgb(150, 150, 150)
+                          value: null
+                        - color: green
+                          value: 1
+                unit: prefix:$
+          gridPos:
+            h: 4
+            w: 6
+            x: 0
+            "y": 25
+          id: 12
+          links: []
+          options:
+            colorMode: value
+            graphMode: none
+            justifyMode: auto
+            orientation: auto
+            reduceOptions:
+                calcs:
+                    - mean
+                fields: ""
+                values: false
+            textMode: auto
+          pluginVersion: "7"
+          targets:
+            - expr: grafanacloud_org_traces_overage
+              format: time_series
+              instant: true
+              intervalFactor: 2
+              legendFormat: ""
+              refId: A
+          title: Current Traces Additional Usage Amount
+          transparent: false
+          type: stat
+        - aliasColors: {}
+          bars: false
+          dashLength: 10
+          dashes: false
+          datasource: grafanacloud-usage
+          fill: 1
+          fillGradient: 0
+          gridPos:
+            h: 8
+            w: 18
+            x: 6
+            "y": 21
+          id: 13
+          legend:
+            alignAsTable: false
+            avg: false
+            current: false
+            max: false
+            min: false
+            rightSide: false
+            show: true
+            sideWidth: null
+            total: false
+            values: false
+          lines: true
+          linewidth: 1
+          links: []
+          nullPointMode: "null"
+          percentage: false
+          pointradius: 5
+          points: false
+          renderer: flot
+          repeat: null
+          seriesOverrides:
+            - alias: Additional Usage Amount
+              yaxis: 2
+            - alias: Included Usage
+              dashes: true
+              fill: 0
+              linewidth: 2
+              transform: constant
+          spaceLength: 10
+          stack: false
+          steppedLine: false
+          targets:
+            - expr: grafanacloud_org_traces_usage
+              format: time_series
+              intervalFactor: 2
+              legendFormat: Billable Usage
+              refId: A
+            - expr: grafanacloud_org_traces_overage
+              format: time_series
+              intervalFactor: 2
+              legendFormat: Additional Usage Amount
+              refId: B
+            - expr: grafanacloud_org_traces_included_usage
+              format: time_series
+              instant: true
+              intervalFactor: 2
+              legendFormat: Included Usage
+              refId: C
+          thresholds: []
+          timeFrom: null
+          timeShift: null
+          title: Total Billable Traces Usage
+          tooltip:
+            shared: true
+            sort: 0
+            value_type: individual
+          type: graph
+          xaxis:
+            buckets: null
+            mode: time
+            name: null
+            show: true
+            values: []
+          yaxes:
+            - format: decgbytes
+              label: null
+              logBase: 1
+              max: null
+              min: "0"
+              show: true
+            - format: currencyUSD
+              label: null
+              logBase: 1
+              max: null
+              min: "0"
+              show: true
+        - datasource: grafanacloud-usage
+          fieldConfig:
+            defaults:
+                links: []
+                mappings: []
+                noValue: "0"
+                thresholds:
+                    mode: absolute
+                    steps:
+                        - color: rgb(150, 150, 150)
+                          value: null
+                unit: short
+          gridPos:
+            h: 4
+            w: 6
+            x: 0
+            "y": 29
+          id: 14
+          links: []
+          options:
+            colorMode: value
+            graphMode: none
+            justifyMode: auto
+            orientation: auto
+            reduceOptions:
+                calcs:
+                    - mean
+                fields: ""
+                values: false
+            textMode: auto
+          pluginVersion: "7"
+          targets:
+            - expr: grafanacloud_org_grafana_billable_users
+              format: time_series
+              instant: true
+              intervalFactor: 2
+              legendFormat: ""
+              refId: A
+          title: Current Billable Grafana Users
+          transparent: false
+          type: stat
+        - datasource: grafanacloud-usage
+          fieldConfig:
+            defaults:
+                links: []
+                mappings: []
+                noValue: $0
+                thresholds:
+                    mode: absolute
+                    steps:
+                        - color: rgb(150, 150, 150)
+                          value: null
+                        - color: green
+                          value: 1
+                unit: prefix:$
+          gridPos:
+            h: 4
+            w: 6
+            x: 0
+            "y": 33
+          id: 15
+          links: []
+          options:
+            colorMode: value
+            graphMode: none
+            justifyMode: auto
+            orientation: auto
+            reduceOptions:
+                calcs:
+                    - mean
+                fields: ""
+                values: false
+            textMode: auto
+          pluginVersion: "7"
+          targets:
+            - expr: grafanacloud_org_grafana_overage
+              format: time_series
+              instant: true
+              intervalFactor: 2
+              legendFormat: ""
+              refId: A
+          title: Current Grafana Additional Usage Amount
+          transparent: false
+          type: stat
+        - aliasColors: {}
+          bars: false
+          dashLength: 10
+          dashes: false
+          datasource: grafanacloud-usage
+          fill: 1
+          fillGradient: 0
+          gridPos:
+            h: 8
+            w: 18
+            x: 6
+            "y": 29
+          id: 16
+          legend:
+            alignAsTable: false
+            avg: false
+            current: false
+            max: false
+            min: false
+            rightSide: false
+            show: true
+            sideWidth: null
+            total: false
+            values: false
+          lines: true
+          linewidth: 1
+          links: []
+          nullPointMode: "null"
+          percentage: false
+          pointradius: 5
+          points: false
+          renderer: flot
+          repeat: null
+          seriesOverrides:
+            - alias: Additional Usage Amount
+              yaxis: 2
+            - alias: Included Users
+              dashes: true
+              fill: 0
+              linewidth: 2
+              transform: constant
+          spaceLength: 10
+          stack: false
+          steppedLine: false
+          targets:
+            - expr: grafanacloud_org_grafana_billable_users
+              format: time_series
+              intervalFactor: 2
+              legendFormat: Billable Users
+              refId: A
+            - expr: grafanacloud_org_grafana_overage
+              format: time_series
+              intervalFactor: 2
+              legendFormat: Additional Usage Amount
+              refId: B
+            - expr: grafanacloud_org_grafana_included_users
+              format: time_series
+              instant: true
+              intervalFactor: 2
+              legendFormat: Included Users
+              refId: C
+          thresholds: []
+          timeFrom: null
+          timeShift: null
+          title: Total Billable Grafana Users
+          tooltip:
+            shared: true
+            sort: 0
+            value_type: individual
+          type: graph
+          xaxis:
+            buckets: null
+            mode: time
+            name: null
+            show: true
+            values: []
+          yaxes:
+            - format: short
+              label: null
+              logBase: 1
+              max: null
+              min: "0"
+              show: true
+            - format: currencyUSD
+              label: null
+              logBase: 1
+              max: null
+              min: "0"
+              show: true
+        - gridPos:
+            h: 1
+            w: 24
+            x: 0
+            "y": 37
+          id: 17
+          title: Metrics Instance Stats
+          type: row
+        - aliasColors: {}
+          bars: false
+          dashLength: 10
+          dashes: false
+          datasource: grafanacloud-usage
+          fill: 1
+          fillGradient: 0
+          gridPos:
+            h: 8
+            w: 24
+            x: 0
+            "y": 38
+          id: 18
+          legend:
+            alignAsTable: true
+            avg: true
+            current: true
+            max: true
+            min: true
+            rightSide: true
+            show: true
+            sideWidth: 450
+            total: false
+            values: true
+          lines: true
+          linewidth: 1
+          links: []
+          nullPointMode: "null"
+          percentage: false
+          pointradius: 5
+          points: false
+          renderer: flot
+          repeat: null
+          seriesOverrides: []
+          spaceLength: 10
+          stack: false
+          steppedLine: false
+          targets:
+            - expr: max(grafanacloud_instance_active_series) by (id) * on (id) group_left(name) grafanacloud_instance_info
+              format: time_series
+              interval: ""
+              intervalFactor: 2
+              legendFormat: '{{name}}'
+              refId: A
+            - expr: max(grafanacloud_instance_active_datadog_series > 0) by (id) * on (id) group_left(name) grafanacloud_instance_info
+              format: time_series
+              interval: ""
+              intervalFactor: 2
+              legendFormat: '{{name}} (Datadog series) '
+              refId: B
+          thresholds: []
+          timeFrom: null
+          timeShift: null
+          title: Metrics Active Series
+          tooltip:
+            shared: true
+            sort: 0
+            value_type: individual
+          type: graph
+          xaxis:
+            buckets: null
+            mode: time
+            name: null
+            show: true
+            values: []
+          yaxes:
+            - format: short
+              label: null
+              logBase: 1
+              max: null
+              min: null
+              show: true
+            - format: short
+              label: null
+              logBase: 1
+              max: null
+              min: null
+              show: true
+        - aliasColors: {}
+          bars: false
+          dashLength: 10
+          dashes: false
+          datasource: grafanacloud-usage
+          fill: 1
+          fillGradient: 0
+          gridPos:
+            h: 8
+            w: 24
+            x: 0
+            "y": 46
+          id: 19
+          legend:
+            alignAsTable: true
+            avg: true
+            current: true
+            max: true
+            min: true
+            rightSide: true
+            show: true
+            sideWidth: 450
+            total: false
+            values: true
+          lines: true
+          linewidth: 1
+          links: []
+          nullPointMode: "null"
+          percentage: false
+          pointradius: 5
+          points: false
+          renderer: flot
+          repeat: null
+          seriesOverrides: []
+          spaceLength: 10
+          stack: false
+          steppedLine: false
+          targets:
+            - expr: max(grafanacloud_instance_samples_per_second * 60) by (id) * on(id) group_left(name) grafanacloud_instance_info
+              format: time_series
+              interval: ""
+              intervalFactor: 2
+              legendFormat: '{{name}}'
+              refId: A
+          thresholds: []
+          timeFrom: null
+          timeShift: null
+          title: Metrics Ingestion Rate (DPM)
+          tooltip:
+            shared: true
+            sort: 0
+            value_type: individual
+          type: graph
+          xaxis:
+            buckets: null
+            mode: time
+            name: null
+            show: true
+            values: []
+          yaxes:
+            - format: short
+              label: null
+              logBase: 1
+              max: null
+              min: null
+              show: true
+            - format: short
+              label: null
+              logBase: 1
+              max: null
+              min: null
+              show: true
+        - aliasColors: {}
+          bars: false
+          dashLength: 10
+          dashes: false
+          datasource: grafanacloud-usage
+          fill: 1
+          fillGradient: 0
+          gridPos:
+            h: 8
+            w: 24
+            x: 0
+            "y": 54
+          id: 20
+          legend:
+            alignAsTable: true
+            avg: false
+            current: false
+            max: false
+            min: false
+            rightSide: true
+            show: true
+            sideWidth: 450
+            total: false
+            values: false
+          lines: true
+          linewidth: 1
+          links: []
+          nullPointMode: "null"
+          percentage: false
+          pointradius: 5
+          points: false
+          renderer: flot
+          repeat: null
+          seriesOverrides: []
+          spaceLength: 10
+          stack: false
+          steppedLine: false
+          targets:
+            - expr: sum(max(grafanacloud_instance_samples_discarded_per_second) by (id, reason)) by (id, reason) * on(id) group_left(name) grafanacloud_instance_info
+              format: time_series
+              interval: ""
+              intervalFactor: 2
+              legendFormat: '{{name}} - {{reason}}'
+              refId: A
+          thresholds: []
+          timeFrom: null
+          timeShift: null
+          title: Discarded Metric Samples
+          tooltip:
+            shared: true
+            sort: 0
+            value_type: individual
+          type: graph
+          xaxis:
+            buckets: null
+            mode: time
+            name: null
+            show: true
+            values: []
+          yaxes:
+            - format: si:/s
+              label: null
+              logBase: 1
+              max: null
+              min: null
+              show: true
+            - format: short
+              label: null
+              logBase: 1
+              max: null
+              min: null
+              show: true
+        - gridPos:
+            h: 1
+            w: 24
+            x: 0
+            "y": 62
+          id: 21
+          title: Logs Instance Stats
+          type: row
+        - aliasColors: {}
+          bars: false
+          dashLength: 10
+          dashes: false
+          datasource: grafanacloud-usage
+          fill: 1
+          fillGradient: 0
+          gridPos:
+            h: 8
+            w: 24
+            x: 0
+            "y": 63
+          id: 22
+          legend:
+            alignAsTable: true
+            avg: true
+            current: true
+            max: true
+            min: true
+            rightSide: true
+            show: true
+            sideWidth: 450
+            total: false
+            values: true
+          lines: true
+          linewidth: 1
+          links: []
+          nullPointMode: "null"
+          percentage: false
+          pointradius: 5
+          points: false
+          renderer: flot
+          repeat: null
+          seriesOverrides: []
+          spaceLength: 10
+          stack: false
+          steppedLine: false
+          targets:
+            - expr: sum(grafanacloud_logs_instance_bytes_received_per_second) by (id) * on(id) group_left(name) grafanacloud_logs_instance_info
+              format: time_series
+              interval: ""
+              intervalFactor: 2
+              legendFormat: '{{name}}'
+              refId: A
+          thresholds: []
+          timeFrom: null
+          timeShift: null
+          title: Logs Ingestion Rate
+          tooltip:
+            shared: true
+            sort: 0
+            value_type: individual
+          type: graph
+          xaxis:
+            buckets: null
+            mode: time
+            name: null
+            show: true
+            values: []
+          yaxes:
+            - format: Bps
+              label: null
+              logBase: 1
+              max: null
+              min: null
+              show: true
+            - format: short
+              label: null
+              logBase: 1
+              max: null
+              min: null
+              show: true
+        - aliasColors: {}
+          bars: true
+          dashLength: 10
+          dashes: false
+          datasource: grafanacloud-usage
+          fill: 1
+          fillGradient: 0
+          gridPos:
+            h: 8
+            w: 24
+            x: 0
+            "y": 71
+          id: 23
+          legend:
+            alignAsTable: true
+            avg: true
+            current: false
+            max: true
+            min: true
+            rightSide: true
+            show: true
+            sideWidth: 450
+            total: false
+            values: true
+          lines: false
+          linewidth: 1
+          links: []
+          nullPointMode: "null"
+          percentage: false
+          pointradius: 5
+          points: false
+          renderer: flot
+          repeat: null
+          seriesOverrides: []
+          spaceLength: 10
+          stack: false
+          steppedLine: false
+          targets:
+            - expr: sum(sum_over_time((grafanacloud_logs_instance_bytes_received_per_second * 60)[1d:1m])) by (id) * on(id) group_left(name) grafanacloud_logs_instance_info
+              format: time_series
+              interval: 1d
+              intervalFactor: 1
+              legendFormat: '{{name}}'
+              refId: A
+          thresholds: []
+          timeFrom: null
+          timeShift: null
+          title: Total Ingested Logs by Day
+          tooltip:
+            shared: true
+            sort: 0
+            value_type: individual
+          type: graph
+          xaxis:
+            buckets: null
+            mode: time
+            name: null
+            show: true
+            values: []
+          yaxes:
+            - format: decbytes
+              label: null
+              logBase: 1
+              max: null
+              min: null
+              show: true
+            - format: short
+              label: null
+              logBase: 1
+              max: null
+              min: null
+              show: true
+        - aliasColors: {}
+          bars: false
+          dashLength: 10
+          dashes: false
+          datasource: grafanacloud-usage
+          fill: 1
+          fillGradient: 0
+          gridPos:
+            h: 8
+            w: 24
+            x: 0
+            "y": 79
+          id: 24
+          legend:
+            alignAsTable: true
+            avg: false
+            current: false
+            max: false
+            min: false
+            rightSide: true
+            show: true
+            sideWidth: 450
+            total: false
+            values: false
+          lines: true
+          linewidth: 1
+          links: []
+          nullPointMode: "null"
+          percentage: false
+          pointradius: 5
+          points: false
+          renderer: flot
+          repeat: null
+          seriesOverrides: []
+          spaceLength: 10
+          stack: false
+          steppedLine: false
+          targets:
+            - expr: sum(grafanacloud_logs_instance_samples_discarded_per_second) by (id, reason) * on(id) group_left(name) grafanacloud_logs_instance_info
+              format: time_series
+              interval: ""
+              intervalFactor: 2
+              legendFormat: '{{name}} - {{reason}}'
+              refId: A
+          thresholds: []
+          timeFrom: null
+          timeShift: null
+          title: Discarded Log Samples
+          tooltip:
+            shared: true
+            sort: 0
+            value_type: individual
+          type: graph
+          xaxis:
+            buckets: null
+            mode: time
+            name: null
+            show: true
+            values: []
+          yaxes:
+            - format: si:/s
+              label: null
+              logBase: 1
+              max: null
+              min: null
+              show: true
+            - format: short
+              label: null
+              logBase: 1
+              max: null
+              min: null
+              show: true
+        - gridPos:
+            h: 1
+            w: 24
+            x: 0
+            "y": 87
+          id: 25
+          title: Traces Instance Stats
+          type: row
+        - aliasColors: {}
+          bars: false
+          dashLength: 10
+          dashes: false
+          datasource: grafanacloud-usage
+          fill: 1
+          fillGradient: 0
+          gridPos:
+            h: 8
+            w: 24
+            x: 0
+            "y": 88
+          id: 26
+          legend:
+            alignAsTable: true
+            avg: true
+            current: true
+            max: true
+            min: true
+            rightSide: true
+            show: true
+            sideWidth: 450
+            total: false
+            values: true
+          lines: true
+          linewidth: 1
+          links: []
+          nullPointMode: "null"
+          percentage: false
+          pointradius: 5
+          points: false
+          renderer: flot
+          repeat: null
+          seriesOverrides: []
+          spaceLength: 10
+          stack: false
+          steppedLine: false
+          targets:
+            - expr: sum(grafanacloud_traces_instance_bytes_received_per_second) by (id) * on(id) group_left(name) grafanacloud_traces_instance_info
+              format: time_series
+              interval: ""
+              intervalFactor: 2
+              legendFormat: '{{name}}'
+              refId: A
+          thresholds: []
+          timeFrom: null
+          timeShift: null
+          title: Traces Ingestion Rate
+          tooltip:
+            shared: true
+            sort: 0
+            value_type: individual
+          type: graph
+          xaxis:
+            buckets: null
+            mode: time
+            name: null
+            show: true
+            values: []
+          yaxes:
+            - format: Bps
+              label: null
+              logBase: 1
+              max: null
+              min: null
+              show: true
+            - format: short
+              label: null
+              logBase: 1
+              max: null
+              min: null
+              show: true
+        - aliasColors: {}
+          bars: true
+          dashLength: 10
+          dashes: false
+          datasource: grafanacloud-usage
+          fill: 1
+          fillGradient: 0
+          gridPos:
+            h: 8
+            w: 24
+            x: 0
+            "y": 96
+          id: 27
+          legend:
+            alignAsTable: true
+            avg: true
+            current: false
+            max: true
+            min: true
+            rightSide: true
+            show: true
+            sideWidth: 450
+            total: false
+            values: true
+          lines: false
+          linewidth: 1
+          links: []
+          nullPointMode: "null"
+          percentage: false
+          pointradius: 5
+          points: false
+          renderer: flot
+          repeat: null
+          seriesOverrides: []
+          spaceLength: 10
+          stack: false
+          steppedLine: false
+          targets:
+            - expr: sum(sum_over_time((grafanacloud_traces_instance_bytes_received_per_second * 60)[1d:1m])) by (id) * on(id) group_left(name) grafanacloud_traces_instance_info
+              format: time_series
+              interval: 1d
+              intervalFactor: 1
+              legendFormat: '{{name}}'
+              refId: A
+          thresholds: []
+          timeFrom: null
+          timeShift: null
+          title: Total Ingested Traces by Day
+          tooltip:
+            shared: true
+            sort: 0
+            value_type: individual
+          type: graph
+          xaxis:
+            buckets: null
+            mode: time
+            name: null
+            show: true
+            values: []
+          yaxes:
+            - format: decbytes
+              label: null
+              logBase: 1
+              max: null
+              min: null
+              show: true
+            - format: short
+              label: null
+              logBase: 1
+              max: null
+              min: null
+              show: true
+        - aliasColors: {}
+          bars: false
+          dashLength: 10
+          dashes: false
+          datasource: grafanacloud-usage
+          fill: 1
+          fillGradient: 0
+          gridPos:
+            h: 8
+            w: 24
+            x: 0
+            "y": 104
+          id: 28
+          legend:
+            alignAsTable: true
+            avg: false
+            current: false
+            max: false
+            min: false
+            rightSide: true
+            show: true
+            sideWidth: 450
+            total: false
+            values: false
+          lines: true
+          linewidth: 1
+          links: []
+          nullPointMode: "null"
+          percentage: false
+          pointradius: 5
+          points: false
+          renderer: flot
+          repeat: null
+          seriesOverrides: []
+          spaceLength: 10
+          stack: false
+          steppedLine: false
+          targets:
+            - expr: sum(grafanacloud_traces_instance_discarded_spans_total:rate5m) by (id, reason) * on(id) group_left(name) grafanacloud_traces_instance_info
+              format: time_series
+              interval: ""
+              intervalFactor: 2
+              legendFormat: '{{name}} - {{reason}}'
+              refId: A
+          thresholds: []
+          timeFrom: null
+          timeShift: null
+          title: Discarded Spans
+          tooltip:
+            shared: true
+            sort: 0
+            value_type: individual
+          type: graph
+          xaxis:
+            buckets: null
+            mode: time
+            name: null
+            show: true
+            values: []
+          yaxes:
+            - format: si:/s
+              label: null
+              logBase: 1
+              max: null
+              min: null
+              show: true
+            - format: short
+              label: null
+              logBase: 1
+              max: null
+              min: null
+              show: true
+        - gridPos:
+            h: 1
+            w: 24
+            x: 0
+            "y": 112
+          id: 29
+          title: Grafana Instance Stats
+          type: row
+        - aliasColors: {}
+          bars: false
+          dashLength: 10
+          dashes: false
+          datasource: grafanacloud-usage
+          fill: 1
+          fillGradient: 0
+          gridPos:
+            h: 8
+            w: 24
+            x: 0
+            "y": 113
+          id: 30
+          legend:
+            alignAsTable: true
+            avg: true
+            current: true
+            max: true
+            min: true
+            rightSide: true
+            show: true
+            sideWidth: 450
+            total: false
+            values: true
+          lines: true
+          linewidth: 1
+          links: []
+          nullPointMode: "null"
+          percentage: false
+          pointradius: 5
+          points: false
+          renderer: flot
+          repeat: null
+          seriesOverrides: []
+          spaceLength: 10
+          stack: false
+          steppedLine: false
+          targets:
+            - expr: sum(grafanacloud_grafana_instance_active_user_count) by (id) * on(id) group_left(name) grafanacloud_grafana_instance_info
+              format: time_series
+              interval: ""
+              intervalFactor: 2
+              legendFormat: '{{name}}'
+              refId: A
+          thresholds: []
+          timeFrom: null
+          timeShift: null
+          title: Active Grafana Users (last 30 days)
+          tooltip:
+            shared: true
+            sort: 0
+            value_type: individual
+          type: graph
+          xaxis:
+            buckets: null
+            mode: time
+            name: null
+            show: true
+            values: []
+          yaxes:
+            - format: short
+              label: null
+              logBase: 1
+              max: null
+              min: null
+              show: true
+            - format: short
+              label: null
+              logBase: 1
+              max: null
+              min: null
+              show: true
+        - aliasColors: {}
+          bars: false
+          dashLength: 10
+          dashes: false
+          datasource: grafanacloud-usage
+          fill: 1
+          fillGradient: 0
+          gridPos:
+            h: 8
+            w: 24
+            x: 0
+            "y": 121
+          id: 31
+          legend:
+            alignAsTable: true
+            avg: true
+            current: true
+            max: true
+            min: true
+            rightSide: true
+            show: true
+            sideWidth: 450
+            total: false
+            values: true
+          lines: true
+          linewidth: 1
+          links: []
+          nullPointMode: "null"
+          percentage: false
+          pointradius: 5
+          points: false
+          renderer: flot
+          repeat: null
+          seriesOverrides: []
+          spaceLength: 10
+          stack: false
+          steppedLine: false
+          targets:
+            - expr: sum(grafanacloud_grafana_instance_dashboard_count) by (id) * on(id) group_left(name) grafanacloud_grafana_instance_info
+              format: time_series
+              interval: ""
+              intervalFactor: 2
+              legendFormat: '{{name}}'
+              refId: A
+          thresholds: []
+          timeFrom: null
+          timeShift: null
+          title: Grafana Dashboards
+          tooltip:
+            shared: true
+            sort: 0
+            value_type: individual
+          type: graph
+          xaxis:
+            buckets: null
+            mode: time
+            name: null
+            show: true
+            values: []
+          yaxes:
+            - format: short
+              label: null
+              logBase: 1
+              max: null
+              min: null
+              show: true
+            - format: short
+              label: null
+              logBase: 1
+              max: null
+              min: null
+              show: true
+    refresh: ""
+    rows: []
+    schemaVersion: 14
+    style: dark
+    tags:
+        - billing
+        - grafanacloud
+    templating:
+        list: []
+    time:
+        from: now/M
+        to: now
+    timepicker:
+        refresh_intervals:
+            - 5s
+            - 10s
+            - 30s
+            - 1m
+            - 5m
+            - 15m
+            - 30m
+            - 1h
+            - 2h
+            - 1d
+        time_options:
+            - 5m
+            - 15m
+            - 1h
+            - 6h
+            - 12h
+            - 24h
+            - 2d
+            - 7d
+            - 30d
+    timezone: utc
+    title: Grafana Cloud Billing/Usage
+    uid: RAjXdoH7k

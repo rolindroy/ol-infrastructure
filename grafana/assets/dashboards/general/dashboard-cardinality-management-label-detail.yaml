@@ -1,0 +1,333 @@
+apiVersion: grizzly.grafana.com/v1alpha1
+kind: Dashboard
+metadata:
+    folder: general
+    name: cardinality-management-label-detail
+spec:
+    annotations:
+        list: []
+    editable: false
+    gnetId: null
+    graphTooltip: 0
+    links:
+        - asDropdown: true
+          icon: dashboard
+          includeVars: false
+          keepTime: false
+          tags: []
+          targetBlank: false
+          title: Cardinality management - overview
+          tooltip: ""
+          type: link
+          url: /d/cardinality-management/?${datasource:queryparam}
+    panels:
+        - datasource: ${cardinality}
+          fieldConfig:
+            defaults:
+                color:
+                    fixedColor: blue
+                    mode: fixed
+                mappings: []
+                thresholds:
+                    mode: absolute
+                    steps:
+                        - color: green
+                          value: null
+                        - color: red
+                          value: 80
+            overrides: []
+          gridPos:
+            h: 2
+            w: 8
+            x: 7
+            "y": 0
+          id: 22
+          options:
+            colorMode: value
+            graphMode: none
+            justifyMode: auto
+            orientation: auto
+            reduceOptions:
+                calcs:
+                    - lastNotNull
+                fields: ""
+                values: false
+            text: {}
+            textMode: auto
+          pluginVersion: 8.0.6
+          targets:
+            - cardinalityType: labels
+              parameterList:
+                - ${label}
+              refId: A
+              resultType: subtotal
+              targetDatasource: ${datasource}
+          title: 'Total values for label: $label'
+          transformations:
+            - id: filterFieldsByName
+              options:
+                include:
+                    names:
+                        - Label
+                        - Subtotal
+          type: stat
+        - datasource: null
+          gridPos:
+            h: 12
+            w: 7
+            x: 0
+            "y": 0
+          id: 20
+          options:
+            content: "This dashboard helps you understand the count of time series per label. \n\nUse the selector at the top of the page to pick a label name you’d like to inspect. For the selected label name, you’ll see the label values that have the highest number of series associated with them. So if you’ve chosen “environment” as your label name, you may see that 1231 time series have value “environmentA” attached to them and 542 time series have value “environmentB” attached to them. \n\nThis can be helpful in allowing you to determine where the bulk of your time series are coming from. If the label “team=teamA” was applied to 34,222 series and the label “team=teamB” was only applied to 1,237 series, you’d know, for example, that teamA was responsible for sending the majority of the time series. \n"
+            mode: markdown
+          pluginVersion: 8.0.6
+          title: "\U0001F4A1 Tips"
+          type: text
+        - datasource: ${cardinality}
+          fieldConfig:
+            defaults:
+                color:
+                    fixedColor: blue
+                    mode: fixed
+                mappings: []
+                thresholds:
+                    mode: absolute
+                    steps:
+                        - color: green
+                          value: null
+                        - color: red
+                          value: 80
+            overrides: []
+          gridPos:
+            h: 2
+            w: 9
+            x: 15
+            "y": 0
+          id: 54
+          options:
+            colorMode: value
+            graphMode: none
+            justifyMode: auto
+            orientation: auto
+            reduceOptions:
+                calcs:
+                    - lastNotNull
+                fields: ""
+                values: false
+            text: {}
+            textMode: auto
+          pluginVersion: 8.0.6
+          targets:
+            - cardinalityType: labels
+              parameterList:
+                - ${label}
+              refId: A
+              resultType: subtotal
+              targetDatasource: ${datasource}
+          title: 'Percentage of total series with label: $label'
+          transformations:
+            - id: filterFieldsByName
+              options:
+                include:
+                    names:
+                        - Label
+                        - Percent of series
+          type: stat
+        - datasource: ${cardinality}
+          description: For each value of label ${label}, shows you the number of time series that have that label value applied.
+          fieldConfig:
+            defaults:
+                color:
+                    mode: thresholds
+                mappings: []
+                thresholds:
+                    mode: percentage
+                    steps:
+                        - color: blue
+                          value: null
+                        - color: yellow
+                          value: 50
+                        - color: red
+                          value: 100
+            overrides: []
+          gridPos:
+            h: 10
+            w: 17
+            x: 7
+            "y": 2
+          id: 13
+          options:
+            tiling: treemapSquarify
+          pluginVersion: 8.0.6
+          targets:
+            - cardinalityType: labels
+              limit: 500
+              parameterList:
+                - ${label}
+              refId: A
+              resultType: details
+              targetDatasource: ${datasource}
+          title: Top distribution of series per label value
+          transformations: []
+          type: marcusolsson-treemap-panel
+        - datasource: null
+          gridPos:
+            h: 1
+            w: 24
+            x: 0
+            "y": 12
+          id: 38
+          options:
+            content: ""
+            mode: markdown
+          pluginVersion: 8.0.6
+          title: Highest cardinality metrics for a given label value
+          type: text
+        - datasource: ${cardinality}
+          description: Highest cardinality metrics with ${label} = ${labelValues}.
+          fieldConfig:
+            defaults:
+                color:
+                    mode: fixed
+                custom:
+                    align: auto
+                    displayMode: auto
+                mappings: []
+                thresholds:
+                    mode: absolute
+                    steps:
+                        - color: green
+                          value: null
+                        - color: red
+                          value: 80
+            overrides:
+                - matcher:
+                    id: byName
+                    options: Metric
+                  properties:
+                    - id: links
+                      value:
+                        - title: 'View detailed cardinality dashboard for metric: ${__data.fields.Metric}'
+                          url: d/cardinality-management-metrics-detail/?var-metric=${__data.fields.Metric}&${datasource:queryparam}
+          gridPos:
+            h: 9
+            w: 12
+            x: 0
+            "y": 13
+          id: 10
+          maxPerRow: 2
+          options:
+            footer:
+                fields: ""
+                reducer:
+                    - sum
+                show: false
+            showHeader: true
+            sortBy:
+                - desc: true
+                  displayName: Percentage of total series
+          pluginVersion: 8.0.6
+          repeat: labelValues
+          repeatDirection: h
+          targets:
+            - cardinalityType: pairs
+              refId: A
+              resultType: details
+              selector: '{${label}=''${labelValues}''}'
+              targetDatasource: ${datasource}
+          title: ${label} = ${labelValues}
+          type: table
+    refresh: 10s
+    schemaVersion: 30
+    style: dark
+    tags:
+        - cardinality-management
+    templating:
+        list:
+            - current:
+                selected: false
+              description: Datasource adapter to provide metrics cardinality
+              error: null
+              hide: 2
+              includeAll: false
+              label: null
+              multi: false
+              name: cardinality
+              options: []
+              query: grafana-cardinality-datasource
+              refresh: 1
+              regex: ""
+              skipUrlSync: false
+              type: datasource
+            - current:
+                selected: false
+              description: Choose a Prometheus data source for cardinality management
+              error: null
+              hide: 0
+              includeAll: false
+              label: Data source
+              multi: false
+              name: datasource
+              options: []
+              query: prometheus
+              queryValue: ""
+              refresh: 1
+              regex: ""
+              skipUrlSync: false
+              type: datasource
+            - allValue: null
+              current:
+                selected: false
+              datasource: ${cardinality}
+              definition: labels list {"targetDatasource":"${datasource}"}
+              description: null
+              error: null
+              hide: 0
+              includeAll: false
+              label: Label
+              multi: false
+              name: label
+              options: []
+              query:
+                cardinalityType: labels
+                resultType: list
+                targetDatasource: ${datasource}
+              refresh: 2
+              regex: ""
+              skipUrlSync: false
+              sort: 1
+              type: query
+            - allValue: null
+              current:
+                selected: false
+              datasource: ${cardinality}
+              definition: '{"targetDatasource":"${datasource}"}'
+              description: null
+              error: null
+              hide: 2
+              includeAll: true
+              label: Label values
+              multi: true
+              name: labelValues
+              options: []
+              query:
+                cardinalityType: labels
+                limit: 16
+                parameterList:
+                    - ${label}
+                resultType: details
+                targetDatasource: ${datasource}
+              refresh: 2
+              regex: ""
+              skipUrlSync: false
+              sort: 0
+              type: query
+    time:
+        from: now-24h
+        to: now
+    timepicker:
+        hidden: true
+    timezone: ""
+    title: 3. Cardinality management - labels
+    uid: cardinality-management-label-detail

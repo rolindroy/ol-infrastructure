@@ -1,0 +1,769 @@
+apiVersion: grizzly.grafana.com/v1alpha1
+kind: Dashboard
+metadata:
+    folder: GStWJWA7k
+    name: XU8HAD5Gk
+spec:
+    __inputs:
+        - description: ""
+          label: loki-datasource
+          name: DS_LOKI
+          pluginId: loki
+          pluginName: Loki
+          type: datasource
+    __requires:
+        - id: grafana
+          name: Grafana
+          type: grafana
+          version: 7.3.6
+        - id: graph
+          name: Graph
+          type: panel
+          version: ""
+        - id: loki
+          name: Loki
+          type: datasource
+          version: 1.0.0
+        - id: stat
+          name: Stat
+          type: panel
+          version: ""
+        - id: table
+          name: Table
+          type: panel
+          version: ""
+        - id: testdata
+          name: TestData DB
+          type: datasource
+          version: 1.0.0
+    annotations:
+        list:
+            - builtIn: 1
+              datasource: -- Grafana --
+              enable: true
+              hide: true
+              iconColor: rgba(0, 211, 255, 1)
+              name: Annotations & Alerts
+              type: dashboard
+    description: This is a Usage Insights dashboard expecting Grafana events in logfmt instead of json.
+    editable: true
+    gnetId: 15083
+    graphTooltip: 0
+    links:
+        - icon: dashboard
+          tags: []
+          title: Usage insights per datasource
+          tooltip: ""
+          type: link
+          url: /d/AEbrOO2Mz/usage-insights-for-datasource
+    panels:
+        - collapsed: false
+          datasource: null
+          gridPos:
+            h: 1
+            w: 24
+            x: 0
+            "y": 0
+          id: 31
+          panels: []
+          title: Usage Insight KPI
+          type: row
+        - datasource: grafanacloud-mitolci-usage-insights
+          description: ""
+          fieldConfig:
+            defaults:
+                color:
+                    mode: thresholds
+                custom:
+                    align: null
+                mappings: []
+                thresholds:
+                    mode: absolute
+                    steps:
+                        - color: purple
+                          value: null
+                unit: short
+            overrides: []
+          gridPos:
+            h: 4
+            w: 6
+            x: 0
+            "y": 1
+          id: 25
+          interval: 23.9h
+          options:
+            colorMode: background
+            graphMode: area
+            justifyMode: center
+            orientation: auto
+            reduceOptions:
+                calcs:
+                    - last
+                fields: ""
+                values: false
+            text: {}
+            textMode: value
+          pluginVersion: 8.2.5
+          targets:
+            - expr: 'sum(count_over_time({instance_type="grafana"}[$__interval])) '
+              legendFormat: ""
+              refId: A
+          timeFrom: null
+          timeShift: null
+          title: 'Total usage insights events  '
+          transformations:
+            - id: reduce
+              options:
+                reducers:
+                    - sum
+          type: stat
+        - datasource: grafanacloud-mitolci-usage-insights
+          description: ""
+          fieldConfig:
+            defaults:
+                color:
+                    mode: thresholds
+                custom:
+                    align: null
+                    filterable: false
+                mappings: []
+                thresholds:
+                    mode: absolute
+                    steps:
+                        - color: purple
+                          value: null
+            overrides:
+                - matcher:
+                    id: byName
+                    options: Requests
+                  properties:
+                    - id: custom.width
+                      value: 100
+          gridPos:
+            h: 4
+            w: 6
+            x: 6
+            "y": 1
+          id: 27
+          interval: 4.9m
+          options:
+            colorMode: background
+            graphMode: none
+            justifyMode: auto
+            orientation: auto
+            reduceOptions:
+                calcs:
+                    - sum
+                fields: ""
+                values: false
+            text: {}
+            textMode: value
+          pluginVersion: 8.2.5
+          targets:
+            - expr: 'count(sum by (datasourceId) (count_over_time({instance_type="grafana"} | logfmt |  error="" [5m])))  '
+              legendFormat: ""
+              refId: A
+          timeFrom: 5m
+          timeShift: null
+          title: Datasources in use right now
+          transformations: []
+          type: stat
+        - datasource: grafanacloud-mitolci-usage-insights
+          description: ""
+          fieldConfig:
+            defaults:
+                color:
+                    mode: thresholds
+                custom:
+                    align: null
+                mappings: []
+                thresholds:
+                    mode: absolute
+                    steps:
+                        - color: purple
+                          value: null
+            overrides:
+                - matcher:
+                    id: byName
+                    options: Requests
+                  properties:
+                    - id: custom.width
+                      value: 100
+          gridPos:
+            h: 4
+            w: 6
+            x: 12
+            "y": 1
+          id: 28
+          interval: 4.9m
+          options:
+            colorMode: background
+            graphMode: none
+            justifyMode: auto
+            orientation: auto
+            reduceOptions:
+                calcs:
+                    - max
+                fields: ""
+                values: false
+            text: {}
+            textMode: value
+          pluginVersion: 8.2.5
+          targets:
+            - expr: count(sum by (dashboardId) (count_over_time({instance_type="grafana"} | logfmt |  error="" [5m])))
+              legendFormat: ""
+              refId: A
+          timeFrom: 5m
+          timeShift: null
+          title: Dashboards in use right now
+          transformations: []
+          type: stat
+        - datasource: grafanacloud-mitolci-usage-insights
+          description: ""
+          fieldConfig:
+            defaults:
+                color:
+                    mode: thresholds
+                custom:
+                    align: null
+                mappings: []
+                thresholds:
+                    mode: absolute
+                    steps:
+                        - color: purple
+                          value: null
+            overrides:
+                - matcher:
+                    id: byName
+                    options: Requests
+                  properties:
+                    - id: custom.width
+                      value: 100
+          gridPos:
+            h: 4
+            w: 6
+            x: 18
+            "y": 1
+          id: 29
+          interval: 4.9m
+          options:
+            colorMode: background
+            graphMode: none
+            justifyMode: auto
+            orientation: auto
+            reduceOptions:
+                calcs:
+                    - max
+                fields: ""
+                values: false
+            text: {}
+            textMode: value
+          pluginVersion: 8.2.5
+          targets:
+            - expr: count(sum by (userId) (count_over_time({instance_type="grafana"} | logfmt |  error="" [5m])))
+              legendFormat: ""
+              refId: A
+          timeFrom: 5m
+          timeShift: null
+          title: Users right now
+          transformations: []
+          type: stat
+        - collapsed: false
+          datasource: ""
+          gridPos:
+            h: 1
+            w: 24
+            x: 0
+            "y": 5
+          id: 16
+          panels: []
+          title: Usage Insight Details
+          type: row
+        - bars: false
+          dashLength: 10
+          dashes: false
+          datasource: grafanacloud-mitolci-usage-insights
+          fieldConfig:
+            defaults:
+                unit: short
+            overrides: []
+          fill: 1
+          fillGradient: 0
+          gridPos:
+            h: 8
+            w: 24
+            x: 0
+            "y": 6
+          hiddenSeries: false
+          id: 10
+          interval: 5m
+          legend:
+            alignAsTable: true
+            avg: false
+            current: false
+            max: false
+            min: false
+            rightSide: true
+            show: true
+            total: false
+            values: false
+          lines: true
+          linewidth: 1
+          nullPointMode: "null"
+          options:
+            alertThreshold: true
+          percentage: false
+          pluginVersion: 8.2.5
+          pointradius: 2
+          points: false
+          renderer: flot
+          seriesOverrides:
+            - $$hashKey: object:220
+              alias: /errors/
+              color: '#E02F44'
+            - $$hashKey: object:221
+              alias: /Requests from/
+              color: '#3274D9'
+            - $$hashKey: object:736
+              alias: /Dashboard views from/
+              color: '#56A64B'
+          spaceLength: 10
+          stack: true
+          steppedLine: false
+          targets:
+            - expr: sum by(host) (count_over_time({instance_type="grafana"} | logfmt | eventName="data-request" | error = "" [$__interval]))
+              legendFormat: Data Requests from {{host}}
+              refId: A
+            - expr: sum by(host) (count_over_time({instance_type="grafana"} | logfmt | eventName="data-request" | error != "" [$__interval]))
+              legendFormat: Data Requests errors from {{host}}
+              refId: B
+            - expr: sum by(host) (count_over_time({instance_type="grafana"} | logfmt | eventName="dashboard-view" [$__interval]))
+              legendFormat: Dashboard views from  {{host}}
+              refId: C
+          thresholds: []
+          timeFrom: null
+          timeRegions: []
+          timeShift: null
+          title: Usage insights events
+          tooltip:
+            shared: true
+            sort: 0
+            value_type: individual
+          type: graph
+          xaxis:
+            buckets: null
+            mode: time
+            name: null
+            show: true
+            values: []
+          yaxes:
+            - $$hashKey: object:234
+              decimals: 0
+              format: short
+              label: null
+              logBase: 1
+              max: null
+              min: null
+              show: true
+            - $$hashKey: object:235
+              format: short
+              label: null
+              logBase: 1
+              max: null
+              min: null
+              show: false
+          yaxis:
+            align: false
+            alignLevel: null
+        - datasource: grafanacloud-mitolci-usage-insights
+          fieldConfig:
+            defaults:
+                color:
+                    mode: thresholds
+                custom:
+                    align: null
+                    displayMode: auto
+                    filterable: false
+                links: []
+                mappings: []
+                thresholds:
+                    mode: absolute
+                    steps:
+                        - color: green
+                          value: null
+                        - color: red
+                          value: 80
+            overrides:
+                - matcher:
+                    id: byName
+                    options: Views
+                  properties:
+                    - id: custom.displayMode
+                      value: gradient-gauge
+                    - id: color
+                      value:
+                        mode: continuous-BlPu
+          gridPos:
+            h: 7
+            w: 9
+            x: 0
+            "y": 14
+          id: 18
+          interval: ""
+          options:
+            showHeader: true
+            sortBy:
+                - desc: true
+                  displayName: Views
+          pluginVersion: 8.2.5
+          targets:
+            - expr: topk(10, sum by (dashboardId,dashboardName,folderName) (count_over_time({instance_type="grafana"} | logfmt | eventName="dashboard-view" [$__range])))
+              instant: true
+              legendFormat: '{{dashboardName}} - {{folderName}}'
+              range: false
+              refId: A
+          timeFrom: null
+          timeShift: null
+          title: Top 10 dashboards
+          transformations:
+            - id: organize
+              options:
+                excludeByName:
+                    Time: true
+                    dashboardId: true
+                    folderName: true
+                indexByName: {}
+                renameByName:
+                    Field: Dashboard - Folder
+                    Total: Views
+                    'Value #A': Views
+                    dashboardName: Dashboard
+          type: table
+        - datasource: grafanacloud-mitolci-usage-insights
+          fieldConfig:
+            defaults:
+                color:
+                    mode: thresholds
+                custom:
+                    align: null
+                    displayMode: auto
+                    filterable: false
+                links:
+                    - title: Go to datasource usage insights
+                      url: /d/AEbrOO2Mz/usage-insights-for-datasource?var-Datasource=${__value.text:percentencode}&${__url_time_range}
+                mappings: []
+                thresholds:
+                    mode: absolute
+                    steps:
+                        - color: green
+                          value: null
+                        - color: red
+                          value: 80
+            overrides:
+                - matcher:
+                    id: byName
+                    options: Query Count
+                  properties:
+                    - id: custom.displayMode
+                      value: gradient-gauge
+                    - id: color
+                      value:
+                        mode: continuous-BlPu
+          gridPos:
+            h: 7
+            w: 9
+            x: 9
+            "y": 14
+          id: 20
+          interval: ""
+          options:
+            showHeader: true
+            sortBy:
+                - desc: true
+                  displayName: Query Count
+          pluginVersion: 8.2.5
+          targets:
+            - expr: topk(10, sum by (datasourceName) (count_over_time({instance_type="grafana"} | logfmt | eventName="data-request" [$__range])))
+              instant: true
+              legendFormat: '{{datasourceName}}'
+              range: false
+              refId: A
+          timeFrom: null
+          timeShift: null
+          title: Top 10 data sources
+          transformations:
+            - id: organize
+              options:
+                excludeByName:
+                    Time: true
+                indexByName: {}
+                renameByName:
+                    Field: Datasource
+                    Total: Query Count
+                    'Value #A': Query Count
+                    datasourceName: Datasource
+          type: table
+        - datasource: grafanacloud-mitolci-usage-insights
+          fieldConfig:
+            defaults:
+                color:
+                    mode: thresholds
+                custom:
+                    align: null
+                    displayMode: auto
+                    filterable: false
+                mappings: []
+                thresholds:
+                    mode: absolute
+                    steps:
+                        - color: green
+                          value: null
+                        - color: red
+                          value: 80
+            overrides:
+                - matcher:
+                    id: byName
+                    options: Views
+                  properties:
+                    - id: custom.displayMode
+                      value: gradient-gauge
+                    - id: color
+                      value:
+                        mode: continuous-BlPu
+          gridPos:
+            h: 7
+            w: 6
+            x: 18
+            "y": 14
+          id: 22
+          interval: ""
+          options:
+            showHeader: true
+            sortBy:
+                - desc: true
+                  displayName: Views
+          pluginVersion: 8.2.5
+          targets:
+            - expr: topk(10, sum by (username) (count_over_time({instance_type="grafana"} | logfmt | eventName="dashboard-view" [$__range])))
+              instant: true
+              legendFormat: '{{username}}'
+              range: false
+              refId: A
+          timeFrom: null
+          timeShift: null
+          title: Top 10 users
+          transformations:
+            - id: organize
+              options:
+                excludeByName:
+                    Time: true
+                indexByName: {}
+                renameByName:
+                    Field: Username
+                    Total: Views
+                    'Value #A': Views
+                    username: Username
+          type: table
+        - datasource: grafanacloud-mitolci-usage-insights
+          fieldConfig:
+            defaults:
+                color:
+                    mode: thresholds
+                custom:
+                    align: null
+                    displayMode: auto
+                    filterable: false
+                mappings: []
+                thresholds:
+                    mode: absolute
+                    steps:
+                        - color: green
+                          value: null
+            overrides:
+                - matcher:
+                    id: byName
+                    options: Error Count
+                  properties:
+                    - id: custom.displayMode
+                      value: gradient-gauge
+                    - id: color
+                      value:
+                        mode: continuous-YlRd
+          gridPos:
+            h: 7
+            w: 9
+            x: 0
+            "y": 21
+          id: 19
+          interval: ""
+          options:
+            showHeader: true
+            sortBy:
+                - desc: true
+                  displayName: Error Count
+          pluginVersion: 8.2.5
+          targets:
+            - expr: topk(10, sum by (dashboardId,dashboardName,folderName) (count_over_time({instance_type="grafana"} | logfmt | eventName="data-request" | error!="" [$__range])))
+              instant: true
+              legendFormat: '{{dashboardName}} - {{folderName}}'
+              range: false
+              refId: A
+          timeFrom: null
+          timeShift: null
+          title: Top 10 dashboards with errors
+          transformations:
+            - id: organize
+              options:
+                excludeByName:
+                    Time: true
+                    'Value #A': false
+                    dashboardId: true
+                    dashboardName: false
+                    folderName: true
+                indexByName: {}
+                renameByName:
+                    Field: Dashboard - Folder
+                    Total: Error Count
+                    'Value #A': Error Count
+                    dashboardName: Dashboard
+          type: table
+        - datasource: grafanacloud-mitolci-usage-insights
+          fieldConfig:
+            defaults:
+                color:
+                    mode: thresholds
+                custom:
+                    align: null
+                    displayMode: auto
+                    filterable: false
+                links:
+                    - title: Go to datasource usage insights
+                      url: /d/AEbrOO2Mz/usage-insights-for-datasource?var-Datasource=${__value.text:percentencode}&${__url_time_range}
+                mappings: []
+                thresholds:
+                    mode: absolute
+                    steps:
+                        - color: green
+                          value: null
+                        - color: red
+                          value: 80
+            overrides:
+                - matcher:
+                    id: byName
+                    options: Error Count
+                  properties:
+                    - id: custom.displayMode
+                      value: gradient-gauge
+                    - id: color
+                      value:
+                        mode: continuous-YlRd
+          gridPos:
+            h: 7
+            w: 9
+            x: 9
+            "y": 21
+          id: 21
+          interval: ""
+          options:
+            showHeader: true
+            sortBy:
+                - desc: true
+                  displayName: Error Count
+          pluginVersion: 8.2.5
+          targets:
+            - expr: topk(10, sum by (datasourceName) (count_over_time({instance_type="grafana"} | logfmt | eventName="data-request" | error!="" [$__range])))
+              instant: true
+              legendFormat: '{{datasourceName}}'
+              range: false
+              refId: A
+          timeFrom: null
+          timeShift: null
+          title: Top 10 data sources with errors
+          transformations:
+            - id: organize
+              options:
+                excludeByName:
+                    Time: true
+                indexByName: {}
+                renameByName:
+                    Field: Datasource
+                    Total: Error Count
+                    'Value #A': Error Count
+                    datasourceName: Datasource
+          type: table
+        - datasource: grafanacloud-mitolci-usage-insights
+          description: ""
+          fieldConfig:
+            defaults:
+                color:
+                    mode: thresholds
+                custom:
+                    align: null
+                    displayMode: auto
+                    filterable: false
+                mappings: []
+                thresholds:
+                    mode: absolute
+                    steps:
+                        - color: green
+                          value: null
+                        - color: red
+                          value: 80
+            overrides:
+                - matcher:
+                    id: byName
+                    options: Error Count
+                  properties:
+                    - id: custom.displayMode
+                      value: gradient-gauge
+                    - id: color
+                      value:
+                        mode: continuous-YlRd
+          gridPos:
+            h: 7
+            w: 6
+            x: 18
+            "y": 21
+          id: 23
+          interval: ""
+          options:
+            showHeader: true
+            sortBy:
+                - desc: true
+                  displayName: Error count
+          pluginVersion: 8.2.5
+          targets:
+            - expr: topk(10, sum by (username) (count_over_time({instance_type="grafana"} | logfmt | eventName="data-request" | error!="" [$__range])))
+              instant: true
+              legendFormat: '{{username}}'
+              range: false
+              refId: A
+          timeFrom: null
+          timeShift: null
+          title: Top 10 users seeing errors
+          transformations:
+            - id: organize
+              options:
+                excludeByName:
+                    Time: true
+                indexByName: {}
+                renameByName:
+                    Field: Username
+                    Total: Error count
+                    'Value #A': Error Count
+                    username: Username
+          type: table
+    refresh: 30s
+    schemaVersion: 32
+    style: dark
+    tags:
+        - grafanacloud
+    templating:
+        list: []
+    time:
+        from: now-24h
+        to: now
+    timepicker: {}
+    timezone: ""
+    title: Usage Insights (Cloud)
+    uid: XU8HAD5Gk

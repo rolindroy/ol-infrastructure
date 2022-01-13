@@ -1,0 +1,566 @@
+apiVersion: grizzly.grafana.com/v1alpha1
+kind: Dashboard
+metadata:
+    folder: GStWJWA7k
+    name: AEbrOO2Mz
+spec:
+    __elements: []
+    __inputs:
+        - description: ""
+          label: Insight Logs (vis public gateway)
+          name: DS_INSIGHT_LOGS (VIS PUBLIC GATEWAY)
+          pluginId: loki
+          pluginName: Loki
+          type: datasource
+    __requires:
+        - id: grafana
+          name: Grafana
+          type: grafana
+          version: 8.2.0-33767pre
+        - id: graph
+          name: Graph (old)
+          type: panel
+          version: ""
+        - id: loki
+          name: Loki
+          type: datasource
+          version: 1.0.0
+        - id: stat
+          name: Stat
+          type: panel
+          version: ""
+        - id: table
+          name: Table
+          type: panel
+          version: ""
+    annotations:
+        list:
+            - builtIn: 1
+              datasource: -- Grafana --
+              enable: true
+              hide: true
+              iconColor: rgba(0, 211, 255, 1)
+              name: Annotations & Alerts
+              target:
+                limit: 100
+                matchAny: false
+                tags: []
+                type: dashboard
+              type: dashboard
+    description: Grafana Usage insights datasource details for use with the Loki datasource
+    editable: true
+    fiscalYearStartMonth: 0
+    gnetId: 15088
+    graphTooltip: 0
+    iteration: 1.633616641892e+12
+    links:
+        - icon: dashboard
+          tags: []
+          title: Usage Insights Overview
+          type: link
+          url: /d/XU8HAD5Gk/usage-insights
+    liveNow: false
+    panels:
+        - cacheTimeout: null
+          datasource: grafanacloud-mitolci-usage-insights
+          description: ""
+          fieldConfig:
+            defaults:
+                color:
+                    mode: thresholds
+                mappings: []
+                max: 100
+                min: 0
+                noValue: No errors
+                thresholds:
+                    mode: absolute
+                    steps:
+                        - color: purple
+                          value: null
+                        - color: red
+                          value: 80
+                unit: percent
+            overrides: []
+          gridPos:
+            h: 7
+            w: 4
+            x: 0
+            "y": 0
+          id: 11
+          interval: null
+          links: []
+          maxDataPoints: 1
+          options:
+            colorMode: background
+            graphMode: area
+            justifyMode: center
+            orientation: auto
+            reduceOptions:
+                calcs:
+                    - max
+                fields: ""
+                values: false
+            text: {}
+            textMode: value
+          pluginVersion: 8.2.0-33767pre
+          targets:
+            - expr: 'sum(rate({instance_type="grafana"} | logfmt | datasourceName="${Datasource}" | eventName="data-request" | error!="" [$__interval])) / (sum(rate({instance_type="grafana"} | logfmt | datasourceName="${Datasource}" | eventName="data-request" [$__interval])) / 100) '
+              legendFormat: ""
+              refId: A
+          timeFrom: null
+          timeShift: null
+          title: '% of error requests '
+          type: stat
+        - cacheTimeout: null
+          datasource: grafanacloud-mitolci-usage-insights
+          description: ""
+          fieldConfig:
+            defaults:
+                color:
+                    mode: thresholds
+                mappings: []
+                thresholds:
+                    mode: absolute
+                    steps:
+                        - color: purple
+                          value: null
+                unit: short
+            overrides: []
+          gridPos:
+            h: 7
+            w: 4
+            x: 4
+            "y": 0
+          id: 15
+          interval: null
+          links: []
+          maxDataPoints: 1
+          options:
+            colorMode: background
+            graphMode: area
+            justifyMode: center
+            orientation: auto
+            reduceOptions:
+                calcs:
+                    - sum
+                fields: ""
+                values: false
+            text: {}
+            textMode: value
+          pluginVersion: 8.2.0-33767pre
+          targets:
+            - expr: sum(count_over_time({instance_type="grafana"} | logfmt | datasourceName="${Datasource}" | eventName="data-request" [$__interval]))
+              legendFormat: ""
+              refId: A
+          timeFrom: null
+          timeShift: null
+          title: 'Total requests '
+          type: stat
+        - bars: false
+          dashLength: 10
+          dashes: false
+          datasource: grafanacloud-mitolci-usage-insights
+          description: ""
+          fieldConfig:
+            defaults:
+                unit: short
+            overrides: []
+          fill: 1
+          fillGradient: 0
+          gridPos:
+            h: 7
+            w: 16
+            x: 8
+            "y": 0
+          hiddenSeries: false
+          id: 17
+          interval: 5m
+          legend:
+            alignAsTable: true
+            avg: false
+            current: false
+            max: false
+            min: false
+            rightSide: true
+            show: true
+            total: false
+            values: false
+          lines: true
+          linewidth: 1
+          nullPointMode: "null"
+          options:
+            alertThreshold: true
+          percentage: false
+          pluginVersion: 8.2.0-33767pre
+          pointradius: 2
+          points: false
+          renderer: flot
+          seriesOverrides:
+            - $$hashKey: object:220
+              alias: /errors/
+              color: '#E02F44'
+            - $$hashKey: object:221
+              alias: /Requests from/
+              color: '#3274D9'
+            - $$hashKey: object:736
+              alias: /Dashboard views from/
+              color: '#56A64B'
+          spaceLength: 10
+          stack: true
+          steppedLine: false
+          targets:
+            - datasource: grafanacloud-mitolci-usage-insights
+              expr: sum by(host) (count_over_time({instance_type="grafana"} | logfmt | eventName="data-request" | datasourceName="${Datasource}" | error = "" [$__interval]))
+              legendFormat: Data Requests from {{host}}
+              refId: A
+            - datasource: grafanacloud-mitolci-usage-insights
+              expr: sum by(host) (count_over_time({instance_type="grafana"} | logfmt | eventName="data-request" | datasourceName="${Datasource}" | error != "" [$__interval]))
+              legendFormat: Data Requests errors from {{host}}
+              refId: B
+          thresholds: []
+          timeFrom: null
+          timeRegions: []
+          timeShift: null
+          title: Datasource requests over time
+          tooltip:
+            shared: true
+            sort: 0
+            value_type: individual
+          type: graph
+          xaxis:
+            buckets: null
+            mode: time
+            name: null
+            show: true
+            values: []
+          yaxes:
+            - $$hashKey: object:234
+              decimals: 0
+              format: short
+              label: null
+              logBase: 1
+              max: null
+              min: null
+              show: true
+            - $$hashKey: object:235
+              format: short
+              label: null
+              logBase: 1
+              max: null
+              min: null
+              show: false
+          yaxis:
+            align: false
+            alignLevel: null
+        - datasource: grafanacloud-mitolci-usage-insights
+          description: ""
+          fieldConfig:
+            defaults:
+                color:
+                    mode: thresholds
+                custom:
+                    align: null
+                    displayMode: auto
+                    filterable: false
+                mappings: []
+                thresholds:
+                    mode: absolute
+                    steps:
+                        - color: green
+                          value: null
+                        - color: red
+                          value: 80
+            overrides:
+                - matcher:
+                    id: byName
+                    options: Count
+                  properties:
+                    - id: custom.displayMode
+                      value: gradient-gauge
+                    - id: color
+                      value:
+                        mode: continuous-YlRd
+          gridPos:
+            h: 8
+            w: 8
+            x: 0
+            "y": 7
+          id: 13
+          interval: 30ms
+          options:
+            footer:
+                fields: ""
+                reducer:
+                    - sum
+                show: false
+            showHeader: true
+            sortBy:
+                - desc: true
+                  displayName: Total
+          pluginVersion: 8.2.0-33767pre
+          targets:
+            - datasource: grafanacloud-mitolci-usage-insights
+              expr: topk(10, sum by (error) (count_over_time({instance_type="grafana"} | logfmt | datasourceName="${Datasource}" | error != "" [$__interval])))
+              legendFormat: '{{error}}'
+              refId: A
+          timeFrom: null
+          timeShift: null
+          title: Top 10 error types
+          transformations:
+            - id: reduce
+              options:
+                includeTimeField: false
+                mode: seriesToRows
+                reducers:
+                    - sum
+            - id: organize
+              options:
+                excludeByName: {}
+                indexByName: {}
+                renameByName:
+                    Field: Error Type
+                    Total: Count
+          type: table
+        - aliasColors:
+            95th percentile: blue
+            max latency: super-light-blue
+          bars: false
+          dashLength: 10
+          dashes: false
+          datasource: grafanacloud-mitolci-usage-insights
+          description: ""
+          fieldConfig:
+            defaults:
+                unit: ms
+            overrides: []
+          fill: 5
+          fillGradient: 9
+          gridPos:
+            h: 8
+            w: 16
+            x: 8
+            "y": 7
+          hiddenSeries: false
+          id: 9
+          interval: "30"
+          legend:
+            avg: false
+            current: false
+            max: false
+            min: false
+            show: true
+            total: false
+            values: false
+          lines: true
+          linewidth: 1
+          nullPointMode: "null"
+          options:
+            alertThreshold: true
+          percentage: false
+          pluginVersion: 8.2.0-33767pre
+          pointradius: 2
+          points: false
+          renderer: flot
+          seriesOverrides:
+            - $$hashKey: object:232
+              alias: max latency
+              dashes: true
+              fillGradient: 3
+          spaceLength: 10
+          stack: false
+          steppedLine: false
+          targets:
+            - datasource: grafanacloud-mitolci-usage-insights
+              expr: quantile_over_time(0.95,{instance_type="grafana"} | logfmt | eventName="data-request" | error="" | datasourceName="${Datasource}" | unwrap duration [$__interval]) by (host)
+              legendFormat: 95th percentile
+              refId: C
+            - datasource: grafanacloud-mitolci-usage-insights
+              expr: max(max_over_time({instance_type="grafana"} | logfmt | eventName="data-request" | error="" | datasourceName="${Datasource}" | unwrap duration [$__interval])) by (host)
+              legendFormat: max latency
+              refId: D
+          thresholds: []
+          timeFrom: null
+          timeRegions: []
+          timeShift: null
+          title: 95th percentile of request time
+          tooltip:
+            shared: false
+            sort: 0
+            value_type: individual
+          type: graph
+          xaxis:
+            buckets: null
+            mode: time
+            name: null
+            show: true
+            values: []
+          yaxes:
+            - $$hashKey: object:178
+              decimals: null
+              format: ms
+              label: null
+              logBase: 1
+              max: null
+              min: "0"
+              show: true
+            - $$hashKey: object:179
+              format: short
+              label: null
+              logBase: 1
+              max: null
+              min: null
+              show: false
+          yaxis:
+            align: false
+            alignLevel: null
+        - datasource: grafanacloud-mitolci-usage-insights
+          description: ""
+          fieldConfig:
+            defaults:
+                color:
+                    mode: thresholds
+                custom:
+                    align: null
+                    displayMode: auto
+                    filterable: false
+                mappings: []
+                thresholds:
+                    mode: absolute
+                    steps:
+                        - color: green
+                          value: null
+                        - color: red
+                          value: 80
+            overrides:
+                - matcher:
+                    id: byName
+                    options: Error Count
+                  properties:
+                    - id: custom.displayMode
+                      value: gradient-gauge
+                    - id: color
+                      value:
+                        mode: continuous-YlRd
+          gridPos:
+            h: 8
+            w: 8
+            x: 0
+            "y": 15
+          id: 14
+          options:
+            footer:
+                fields: ""
+                reducer:
+                    - sum
+                show: false
+            showHeader: true
+          pluginVersion: 8.2.0-33767pre
+          targets:
+            - datasource: grafanacloud-mitolci-usage-insights
+              expr: topk(10, sum by (username) (count_over_time({instance_type="grafana"} | logfmt | datasourceName="${Datasource}" | eventName="data-request" | error!="" [$__interval])))
+              legendFormat: '{{username}}'
+              refId: A
+          title: Top 10 users with errors
+          transformations:
+            - id: reduce
+              options:
+                reducers:
+                    - sum
+            - id: organize
+              options:
+                excludeByName: {}
+                indexByName: {}
+                renameByName:
+                    Field: Username
+                    Total: Error Count
+          type: table
+        - datasource: grafanacloud-mitolci-usage-insights
+          fieldConfig:
+            defaults:
+                color:
+                    mode: thresholds
+                custom:
+                    align: null
+                    displayMode: auto
+                    filterable: false
+                mappings: []
+                thresholds:
+                    mode: absolute
+                    steps:
+                        - color: green
+                          value: null
+                        - color: red
+                          value: 80
+            overrides:
+                - matcher:
+                    id: byName
+                    options: Query count
+                  properties:
+                    - id: custom.displayMode
+                      value: gradient-gauge
+                    - id: color
+                      value:
+                        mode: continuous-BlPu
+          gridPos:
+            h: 8
+            w: 16
+            x: 8
+            "y": 15
+          id: 6
+          options:
+            footer:
+                fields: ""
+                reducer:
+                    - sum
+                show: false
+            showHeader: true
+          pluginVersion: 8.2.0-33767pre
+          targets:
+            - datasource: grafanacloud-mitolci-usage-insights
+              expr: topk(10, sum by (username) (count_over_time({instance_type="grafana"} | logfmt | datasourceName="${Datasource}" | eventName="data-request" [$__interval])))
+              legendFormat: '{{username}}'
+              refId: A
+          title: 'Top 10 users '
+          transformations:
+            - id: reduce
+              options:
+                reducers:
+                    - sum
+            - id: organize
+              options:
+                excludeByName: {}
+                indexByName: {}
+                renameByName:
+                    Field: Username
+                    Total: Query count
+          type: table
+    refresh: false
+    schemaVersion: 31
+    style: dark
+    tags:
+        - grafanacloud
+    templating:
+        list:
+            - current:
+                selected: false
+                text: ""
+                value: ""
+              description: null
+              error: null
+              hide: 0
+              label: Datasource
+              name: Datasource
+              options:
+                - selected: true
+                  text: ""
+                  value: ""
+              query: ""
+              skipUrlSync: false
+              type: textbox
+    time:
+        from: now-7d
+        to: now
+    timepicker: {}
+    timezone: ""
+    title: Grafana Usage insights datasource details (Cloud)
+    uid: AEbrOO2Mz
