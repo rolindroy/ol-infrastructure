@@ -1,0 +1,76 @@
+---
+resource_types:
+- name: s3-sync
+  type: docker-image
+  source:
+    repository: mitodl/concourse-s3-sync-resource
+    tag: latest
+
+resources:
+- name: mfe-app-library-authoring
+  type: git
+  source:
+    uri: https://github.com/mitodl/frontend-app-library-authoring.git
+    branch: master
+- name: mfe-app-library-authoring-bucket
+  type: s3-sync
+  source:
+    bucket: mitx-ci-edxapp-mfe
+    path: authoring/
+    directory: mfe-app-library-authoring/dist/
+    options:
+    - --delete
+
+jobs:
+- name: build
+  plan:
+  - get: mfe-app-library-authoring
+    trigger: true
+  - task: npm-install-and-build
+    config:
+      platform: linux
+      image_resource:
+        type: registry-image
+        source:
+          repository: node
+          tag: 14-bullseye-slim
+      inputs:
+      - name: mfe-app-library-authoring
+      outputs:
+      - name: mfe-app-library-authoring/dist
+      params:
+        ACCESS_TOKEN_COOKIE_NAME: mitx-ci-edx-jwt-cookie-header-payload
+        BASE_URL: https://lms-ci.mitx.mit.edu
+        CSRF_TOKEN_API_PATH: /csrf/api/v1/token
+        FAVICON_URL: https://raw.githubusercontent.com/mitodl/mitx-theme/master/lms/static/images/favicon.ico
+        LMS_BASE_URL: https://lms-ci.mitx.mit.edu
+        LOGIN_URL: https://lms-ci.mitx.mit.edu/login
+        LOGOUT_URL: https://lms-ci.mitx.mit.edu/logout
+        LOGO_TRADEMARK_URL: https://raw.githubusercontent.com/mitodl/mitx-theme/master/lms/static/images/logo.png
+        LOGO_URL: https://raw.githubusercontent.com/mitodl/mitx-theme/master/lms/static/images/logo.png
+        LOGO_WHITE_URL: https://raw.githubusercontent.com/mitodl/mitx-theme/master/lms/static/images/logo.png
+        MARKETING_SITE_BASE_URL: https://lms-ci.mitx.mit.edu
+        ORDER_HISTORY_URL:
+        PUBLIC_PATH: /authoring
+        REFRESH_ACCESS_TOKEN_ENDPOINT: https://lms-ci.mitx.mit.edu/login_refresh
+        SEARCH_CATALOG_URL: https://lms-ci.mitx.mit.edu/courses
+        SESSION_COOKIE_DOMAIN: lms-ci.mitx.mit.edu
+        SITE_NAME: MITx Residential
+        STUDIO_BASE_URL: https://studio-ci.mitx.mit.edu
+        SUPPORT_URL: https://odl.zendesk.com/hc/en-us/requests/new
+        USER_INFO_COOKIE_NAME: mitx-ci-edx-user-info
+      run:
+        path: sh
+        dir: mfe-app-library-authoring
+        args:
+        - -exc
+        - |
+          apt-get update
+          apt-get -q -y install python build-essential
+          npm install
+          npm install @edx/frontend-component-footer@npm:@mitodl/frontend-component-footer-mitol@latest --legacy-peer-deps
+          npm install @edx/frontend-component-header@npm:@mitodl/frontend-component-header-mitol@latest --legacy-peer-deps
+          NODE_ENV=production npm run build
+  - put: mfe-app-library-authoring-bucket
+    inputs:
+    - mfe-app-library-authoring/dist

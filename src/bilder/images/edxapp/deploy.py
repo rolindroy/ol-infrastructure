@@ -98,11 +98,21 @@ git_auto_export()
 # Install additional Python dependencies for use with edxapp
 pip.packages(
     name="Install additional edX dependencies",
-    packages=host.data.edx_plugins[EDX_INSTALLATION_NAME],
+    packages=host.data.edx_plugins.get(EDX_INSTALLATION_NAME, []),
     present=True,
     virtualenv="/edx/app/edxapp/venvs/edxapp/",
     sudo_user=EDX_USER,
 )
+
+for pkg in host.data.edx_editable_plugins.get(EDX_INSTALLATION_NAME, []):
+    pip.packages(
+        name=f"Install edX dependency as editable: {pkg}",
+        packages=pkg,
+        present=True,
+        extra_install_args="-e",
+        virtualenv="/edx/app/edxapp/venvs/edxapp/",
+        sudo_user=EDX_USER,
+    )
 
 files.directory(
     name="Create edX log directory and set permissions",

@@ -66,6 +66,15 @@ edx_plugins = {
     ],
 }
 
+edx_editable_plugins = {
+    "mitx": [
+        "git+https://github.com/open-craft/blockstore.git@aa36c415b1f94a9604ca9a4b3bb4a3b32ab8bcbe#egg=blockstore",  # noqa: E501
+    ],
+    "mitx-staging": [
+        "git+https://github.com/open-craft/blockstore.git@aa36c415b1f94a9604ca9a4b3bb4a3b32ab8bcbe#egg=blockstore",  # noqa: E501
+    ],
+}
+
 edx_platform_repository = {
     "mitxonline": {
         "origin": "https://github.com/edx/edx-platform",
@@ -77,10 +86,10 @@ edx_platform_repository = {
     },
     "mitx": {
         "origin": "https://github.com/mitodl/edx-platform",
-        BRANCH: "mitx/maple",
+        BRANCH: "mitx/maple-blockstore",
     },
     "mitx-staging": {
         "origin": "https://github.com/mitodl/edx-platform",
-        BRANCH: "mitx/maple",
+        BRANCH: "mitx/maple-blockstore",
     },
 }
