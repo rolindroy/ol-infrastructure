@@ -1,0 +1,61 @@
+---
+secretsprovider: awskms://alias/infrastructure-secrets-ci
+encryptedkey: AQICAHjs8ajWpT7YRhWXwI//wPkHX53RHlo0DjkgQOwCBTUBwQHg9KIREter7GVF091bq5tVAAAAfjB8BgkqhkiG9w0BBwagbzBtAgEAMGgGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMdT0eZUhWBTcAO2thAgEQgDtsXsQrTOl0cd5HiFFfaEHOjldcRmxUx8uD60zxsrqowj6pSomFQBL1y5/DHUwdwv38G/Oqyuy5UZ2bOg==
+config:
+  aws:region: us-east-1
+  eks:encryption: {}
+  eks:logging:
+    log_types:
+    - api
+    - audit
+    retention_days: 7
+  eks:networking:
+    private_endpoint: true
+    public_endpoint: false
+  eks:node_groups:
+  - auto_scale:
+      desired: 2
+      max: 3
+      min: 2
+    disksize_gb: 50
+    instance_type: t3a.medium
+    labels: {}
+    name: general
+    role:
+    tags: {}
+    taints: {}
+  - auto_scale:
+      desired: 3
+      max: 5
+      min: 2
+    disk_size_gb: 50
+    instance_type: t3a.medium
+    labels:
+      OU: operations
+    name: operations
+    role:
+    tags:
+      OU: operations
+    taints:
+    - effect: NO_SCHEDULE
+      key: dedicated
+      value: operations
+  - auto_scale:
+      desired: 2
+      max: 3
+      min: 1
+    disk_size_gb: 50
+    instance_type: t3a.medium
+    labels:
+      OU: mitx
+    name: mitx
+    role:
+    tags:
+      OU: mitx
+    taints:
+    - effect: NO_SCHEDULE
+      key: dedicated
+      value: mitx
+  eks:version: "1.21"
+  environment:business_unit: operations
+  environment:target_vpc: k8s_vpc

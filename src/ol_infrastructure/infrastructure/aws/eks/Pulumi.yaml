@@ -1,0 +1,6 @@
+---
+name: ol-infrastructure-awseks
+runtime: python
+description: Deploy and manage EKS managed kubernetes clusters
+backend:
+  url: s3://mitol-pulumi-state/
