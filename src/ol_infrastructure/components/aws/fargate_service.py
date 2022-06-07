@@ -25,6 +25,7 @@ from typing import List, Optional, Union
 
 import pulumi
 from pulumi_aws.ec2 import SecurityGroup, get_subnet_ids
+from pulumi_aws.ec2.get_security_group import AwaitableGetSecurityGroupResult
 from pulumi_aws.ecs import (
     Cluster,
     Service,
@@ -87,7 +88,7 @@ class OLFargateServiceConfig(AWSBase):
     # subnets, from this VPC
     vpc_id: Union[pulumi.Output[str], str]
     # Security groups associated with the service and tasks
-    security_groups: List[SecurityGroup]
+    security_groups: List[Union[SecurityGroup, AwaitableGetSecurityGroupResult]]
     # Force a new task deploymennt of the service
     force_new_deployment: bool = False
     # Task Definition(s) to be used with ECS Service
@@ -263,14 +264,6 @@ class OLFargateService(pulumi.ComponentResource):
 
         outputs = []
         for container in config.task_definition_config.container_definition_configs:
-            log_config = None
-            if container.log_configuration:
-                log_config = {
-                    "logDriver": container.log_configuration.log_driver,
-                    "options": container.log_configuration.options,
-                    "secretOptions": container.log_configuration.secret_options,
-                }
-
             environment = []
             if container.environment:
                 for key in container.environment.keys():
@@ -278,25 +271,7 @@ class OLFargateService(pulumi.ComponentResource):
                         {"name": key, "value": container.environment[key]}
                     )
 
-            outputs.append(
-                {
-                    "name": container.container_name,
-                    "image": container.image,
-                    "portMappings": [
-                        {
-                            "containerPort": container.container_port,
-                            "containerName": container.container_name,
-                            "protocol": "tcp",
-                        }
-                    ],
-                    "memory": container.memory,
-                    "command": container.command,
-                    "cpu": container.cpu,
-                    "environment": environment,
-                    "essential": container.is_essential,
-                    "logConfiguration": log_config,
-                }
-            )
+            outputs.append(container.dict(exclude_none=True, by_alias=True))
 
         pulumi.log.debug(f"container definitions: {outputs}")
 
